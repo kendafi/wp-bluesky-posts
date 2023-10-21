@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Bluesky posts
  * Description: This enables the shortcode [bluesky-posts] that outputs a specific users Bluesky posts based on your settings.
- * Version: 2023.10.21
+ * Version: 2023.10.22
  * Update URI: https://github.com/kendafi/wp-bluesky-posts/
  * Author: Kenda
  * Author URI: https://kenda.fi/
@@ -160,7 +160,7 @@ function wp_bluesky_posts_page_content() {
 	<p><label for="wp_bluesky_author">'.esc_html__( 'Author whose posts to display', 'wp-bluesky-posts' ).'</label><br>
 	<input type="text" name="wp_bluesky_author" id="wp_bluesky_author" placeholder="example.bsky.social" value="'.esc_html( $wp_bluesky_author ).'" class="regular-text"></p>
 
-	<p><input type="checkbox" name="wp_bluesky_disablecss" id="wp_bluesky_disablecss" value="1"' . ( $wp_bluesky_disablecss == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disablecss">'.esc_html__( 'Disable CSS set by plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>';
+	<p><input type="checkbox" name="wp_bluesky_disablecss" id="wp_bluesky_disablecss" value="1"' . ( $wp_bluesky_disablecss == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disablecss">'.esc_html__( 'Disable CSS set by this plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>';
 
 	settings_fields( 'wp-bluesky-posts' );
 
@@ -171,6 +171,11 @@ function wp_bluesky_posts_page_content() {
 	);
 
 	echo '</form>';
+
+	echo '<p>'.esc_html__( 'By default the shortcode displays 12 posts. You can specify the amount like the examples below.', 'wp-bluesky-posts' ).'</p>';
+
+	echo '<p>'.esc_html__( 'Display only one:', 'wp-bluesky-posts' ).' <code>[bluesky-posts amount=1]</code></p>';
+	echo '<p>'.esc_html__( 'Display 12:', 'wp-bluesky-posts' ).'<code>[bluesky-posts amount=12]</code></p>';
 
 	echo '<p>'.esc_html__( 'See this plugins source code and get the latest version from here:', 'wp-bluesky-posts' ).' <a href="https://github.com/kendafi/wp-bluesky-posts/" target="_blank">github.com/kendafi/wp-bluesky-posts</a></p>';
 
@@ -225,9 +230,17 @@ function wp_bluesky_assets() {
 
 // Shortcode.
 
-function wp_bluesky_posts_shortcode_output() {
+function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = '' ) {
 
   $return_html = '';
+
+	$bsky_amount = 12;
+
+	if( isset( $atts ) && is_array( $atts ) && array_key_exists( 'amount', $atts ) ) {
+
+		$bsky_amount = $atts['amount'];
+
+	}
 
 	$wp_bluesky_posts_settings = get_option( 'wp_bluesky_posts' );
 
@@ -318,7 +331,7 @@ function wp_bluesky_posts_shortcode_output() {
 				// original posts even if some are skipped, then you can limit the amount
 				// of displayed posts here.
 
-				$display_limit = 12;
+				$display_limit = $bsky_amount;
 
 				// Do not change this. It is used to stop the loop when we hit $display_limit.
 				$display_loop = 0;
