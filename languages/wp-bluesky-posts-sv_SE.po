@@ -1,0 +1,91 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Bluesky posts\n"
+"POT-Creation-Date: 2023-10-20 22:59+0300\n"
+"PO-Revision-Date: 2023-10-20 23:02+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv_SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.3\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: wp-bluesky-posts.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: wp-bluesky-posts.php:38 wp-bluesky-posts.php:55
+msgid "Settings"
+msgstr "Inställningar"
+
+#: wp-bluesky-posts.php:72
+msgid "Bluesky posts settings"
+msgstr "Inställningar för Bluesky-inlägg"
+
+#. Plugin Name of the plugin/theme
+#: wp-bluesky-posts.php:73
+msgid "Bluesky posts"
+msgstr "Bluesky-inlägg"
+
+#: wp-bluesky-posts.php:94
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Du har inte tillräcklig behörighet för att komma åt denna sida."
+
+#: wp-bluesky-posts.php:116
+msgid "Settings are updated."
+msgstr "Inställningarna är uppdaterade."
+
+#: wp-bluesky-posts.php:120
+msgid ""
+"Save settings below and use this shortcode to display Bluesky posts on any "
+"page:"
+msgstr ""
+"Spara inställningarna nedan och använd den här kortkoden för att visa "
+"Bluesky-inlägg på vilken sida som helst:"
+
+#: wp-bluesky-posts.php:122
+msgid "Create your APP password here:"
+msgstr "Skapa ditt APP-lösenord här:"
+
+#: wp-bluesky-posts.php:148
+msgid "Your Bluesky username"
+msgstr "Ditt Bluesky-användarnamn"
+
+#: wp-bluesky-posts.php:151
+msgid "Your Bluesky APP password"
+msgstr "Ditt Bluesky APP-lösenord"
+
+#: wp-bluesky-posts.php:154
+msgid "Author whose posts to display"
+msgstr "Författare vars inlägg ska visas"
+
+#: wp-bluesky-posts.php:160
+msgid "Save settings"
+msgstr "Spara inställningar"
+
+#: wp-bluesky-posts.php:167
+msgid "See this plugins source code and get the latest version from here:"
+msgstr "Se detta tilläggs källkod och hämta den senaste versionen härifrån:"
+
+#. Description of the plugin/theme
+msgid ""
+"This enables the shortcode [bluesky-posts] that outputs a specific users "
+"Bluesky posts based on your settings."
+msgstr ""
+"Detta tillägg aktiverar kortkoden [bluesky-posts] som visar en specifik "
+"användares Bluesky-inlägg baserat på dina inställningar."
+
+#. Author of the plugin/theme
+msgid "Kenda"
+msgstr "Kenda"
+
+#. Author URI of the plugin/theme
+msgid "https://kenda.fi/"
+msgstr "https://kenda.fi/"
