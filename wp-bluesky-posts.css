@@ -1,0 +1,42 @@
+
+.bsky-wrapper {
+
+  display: flex;
+	flex-wrap: wrap;
+
+}
+
+.bsky-item {
+	max-width: 380px;
+	padding: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	border: 1px solid gray;
+	border-radius: 10px;
+}
+
+.bsky-item p {
+	padding: 0;
+	margin: 0 0 1rem 0;
+}
+
+.bsky-item img {
+	margin: 0;
+	margin-right: 10px;
+}
+
+.bsky-user-and-created p {
+	margin-bottom: 2rem;
+}
+
+.bsky-user-and-created img {
+	margin-right: 10px;
+}
+
+.bsky-item-stats {
+	opacity: 0.5;
+}
+
+.bsky-item-stats p {
+	margin: 0;
+}

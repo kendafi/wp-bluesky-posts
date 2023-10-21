@@ -109,6 +109,12 @@ function wp_bluesky_posts_page_content() {
 			'wp_bluesky_author' => str_replace( '@', '', trim( $_POST[ 'wp_bluesky_author' ] ) )
 		);
 
+		if ( isset( $_POST[ 'wp_bluesky_disablecss' ] ) ) {
+
+			$wp_bluesky_posts_settings['wp_bluesky_disablecss'] = 1;
+
+		}
+
 		update_option( 'wp_bluesky_posts', json_encode( $wp_bluesky_posts_settings ) );
 
 		echo '<div class="notice notice-success is-dismissible"><p>'.esc_html__( 'Settings are updated.', 'wp-bluesky-posts' ).'</p></div>';
@@ -122,6 +128,7 @@ function wp_bluesky_posts_page_content() {
 	$wp_bluesky_username = '';
 	$wp_bluesky_password = '';
 	$wp_bluesky_author = '';
+	$wp_bluesky_disablecss = '';
 
 	// Get any settings we may already have stored.
 	$wp_bluesky_posts_settings = get_option( 'wp_bluesky_posts' );
@@ -135,6 +142,7 @@ function wp_bluesky_posts_page_content() {
 			$wp_bluesky_username = $wp_bluesky_posts_settings['wp_bluesky_username'];
 			$wp_bluesky_password = $wp_bluesky_posts_settings['wp_bluesky_password'];
 			$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
+			$wp_bluesky_disablecss = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
 
 		}
 
@@ -150,7 +158,9 @@ function wp_bluesky_posts_page_content() {
 	<input type="text" name="wp_bluesky_password" id="wp_bluesky_password" placeholder="xxxx-xxxx-xxxx-xxxx" value="'.esc_html( $wp_bluesky_password ).'" class="regular-text"></p>
 
 	<p><label for="wp_bluesky_author">'.esc_html__( 'Author whose posts to display', 'wp-bluesky-posts' ).'</label><br>
-	<input type="text" name="wp_bluesky_author" id="wp_bluesky_author" placeholder="example.bsky.social" value="'.esc_html( $wp_bluesky_author ).'" class="regular-text"></p>';
+	<input type="text" name="wp_bluesky_author" id="wp_bluesky_author" placeholder="example.bsky.social" value="'.esc_html( $wp_bluesky_author ).'" class="regular-text"></p>
+
+	<p><input type="checkbox" name="wp_bluesky_disablecss" id="wp_bluesky_disablecss" value="1"' . ( $wp_bluesky_disablecss == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disablecss">'.esc_html__( 'Disable CSS set by plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>';
 
 	settings_fields( 'wp-bluesky-posts' );
 
@@ -165,6 +175,51 @@ function wp_bluesky_posts_page_content() {
 	echo '<p>'.esc_html__( 'See this plugins source code and get the latest version from here:', 'wp-bluesky-posts' ).' <a href="https://github.com/kendafi/wp-bluesky-posts/" target="_blank">github.com/kendafi/wp-bluesky-posts</a></p>';
 
 	echo '</div> <!-- wrap -->';
+
+}
+
+// Add CSS
+
+add_action( 'wp_enqueue_scripts', 'wp_bluesky_assets' );
+
+function wp_bluesky_assets() {
+
+	$wp_bluesky_disablecss = 0;
+
+	// Get any settings we may already have stored.
+	$wp_bluesky_posts_settings = get_option( 'wp_bluesky_posts' );
+
+	if ( $wp_bluesky_posts_settings != '' ) {
+
+		$wp_bluesky_posts_settings = json_decode( $wp_bluesky_posts_settings, true );
+
+		if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
+
+			$wp_bluesky_disablecss = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
+
+		}
+
+	}
+
+	if( $wp_bluesky_disablecss != 1 ) {
+
+		// Use our CSS only if user has not disabled it in settings.
+
+		$our_path = plugin_dir_path( __FILE__ );
+
+		if ( file_exists( $our_path.'wp-bluesky-posts.css' ) ) {
+
+			wp_enqueue_style(
+				'wp-bluesky-posts',
+				plugins_url( basename( $our_path ).'/wp-bluesky-posts.css' ),
+				false,
+				filemtime( $our_path.'wp-bluesky-posts.css' ),
+				false
+			);
+
+		}
+
+	}
 
 }
 
@@ -263,7 +318,7 @@ function wp_bluesky_posts_shortcode_output() {
 				// original posts even if some are skipped, then you can limit the amount
 				// of displayed posts here.
 
-				$display_limit = 10;
+				$display_limit = 12;
 
 				// Do not change this. It is used to stop the loop when we hit $display_limit.
 				$display_loop = 0;
@@ -296,7 +351,7 @@ function wp_bluesky_posts_shortcode_output() {
 									$return_html .= '<div class="bsky-user-and-created"><p>';
 
 										// Avatar
-										$return_html .= '<img src="' . $bsky_post['post']['author']['avatar'] . '" alt="" width="40" hspace="10" align="left">';
+										$return_html .= '<img src="' . $bsky_post['post']['author']['avatar'] . '" alt="" width="50" hspace="10" align="left">';
 
 										// Username
 										$return_html .= '<a href="https://bsky.app/profile/'.$bsky_post['post']['author']['handle'].'" target="_blank">' . htmlentities( $bsky_post['post']['author']['displayName'] ) . '</a><br>';
@@ -307,9 +362,9 @@ function wp_bluesky_posts_shortcode_output() {
 										// Timestamp incl. link to post.
 										$return_html .= '<small><a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank">' . date( $date_time_format, strtotime( $bsky_post['post']['record']['createdAt'] ) ) . '</a></small>';
 
-									$return_html .= '</p></div> <!--bsky-user-and-created -->';
+										$return_html .= '</p></div> <!--bsky-user-and-created -->';
 
-									$return_html .= '<div class="bsky-item-text"><p>';
+										$return_html .= '<div class="bsky-item-text"><p>';
 
 										// The content
 										$return_html .= nl2br( $bsky_post['post']['record']['text'], false );
