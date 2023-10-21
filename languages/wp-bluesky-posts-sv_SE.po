@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2023-10-20 22:59+0300\n"
-"PO-Revision-Date: 2023-10-20 23:02+0300\n"
+"POT-Creation-Date: 2023-10-21 23:36+0300\n"
+"PO-Revision-Date: 2023-10-21 23:36+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -38,11 +38,11 @@ msgstr "Bluesky-inlägg"
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Du har inte tillräcklig behörighet för att komma åt denna sida."
 
-#: wp-bluesky-posts.php:116
+#: wp-bluesky-posts.php:120
 msgid "Settings are updated."
 msgstr "Inställningarna är uppdaterade."
 
-#: wp-bluesky-posts.php:120
+#: wp-bluesky-posts.php:124
 msgid ""
 "Save settings below and use this shortcode to display Bluesky posts on any "
 "page:"
@@ -50,27 +50,49 @@ msgstr ""
 "Spara inställningarna nedan och använd den här kortkoden för att visa "
 "Bluesky-inlägg på vilken sida som helst:"
 
-#: wp-bluesky-posts.php:122
+#: wp-bluesky-posts.php:126
 msgid "Create your APP password here:"
 msgstr "Skapa ditt APP-lösenord här:"
 
-#: wp-bluesky-posts.php:148
+#: wp-bluesky-posts.php:154
 msgid "Your Bluesky username"
 msgstr "Ditt Bluesky-användarnamn"
 
-#: wp-bluesky-posts.php:151
+#: wp-bluesky-posts.php:157
 msgid "Your Bluesky APP password"
 msgstr "Ditt Bluesky APP-lösenord"
 
-#: wp-bluesky-posts.php:154
+#: wp-bluesky-posts.php:160
 msgid "Author whose posts to display"
 msgstr "Författare vars inlägg ska visas"
 
-#: wp-bluesky-posts.php:160
+#: wp-bluesky-posts.php:163
+msgid "Disable CSS set by this plugin - I want to use my own CSS."
+msgstr ""
+"Inaktivera CSS som ställts in av detta tillägg - jag vill använda min egen "
+"CSS."
+
+#: wp-bluesky-posts.php:168
 msgid "Save settings"
 msgstr "Spara inställningar"
 
-#: wp-bluesky-posts.php:167
+#: wp-bluesky-posts.php:175
+msgid ""
+"By default the shortcode displays 12 posts. You can specify the amount like "
+"the examples below."
+msgstr ""
+"Som standard visar kortkoden 12 inlägg. Du kan ange antalet enligt i "
+"exemplen nedan."
+
+#: wp-bluesky-posts.php:177
+msgid "To display only one post, use this shortcode:"
+msgstr "För att visa endast ett inlägg, använd den här kortkoden:"
+
+#: wp-bluesky-posts.php:178
+msgid "To display 12 posts, use this shotcode:"
+msgstr "För att visa 12 inlägg, använd den här kortkoden:"
+
+#: wp-bluesky-posts.php:180
 msgid "See this plugins source code and get the latest version from here:"
 msgstr "Se detta tilläggs källkod och hämta den senaste versionen härifrån:"
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2023-10-20 23:04+0300\n"
-"PO-Revision-Date: 2023-10-20 23:07+0300\n"
+"POT-Creation-Date: 2023-10-21 23:30+0300\n"
+"PO-Revision-Date: 2023-10-21 23:31+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -38,11 +38,11 @@ msgstr "Bluesky-viestit"
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Sinulla ei ole riittäviä oikeuksia käyttää tätä sivua."
 
-#: wp-bluesky-posts.php:116
+#: wp-bluesky-posts.php:120
 msgid "Settings are updated."
 msgstr "Asetukset on päivitetty."
 
-#: wp-bluesky-posts.php:120
+#: wp-bluesky-posts.php:124
 msgid ""
 "Save settings below and use this shortcode to display Bluesky posts on any "
 "page:"
@@ -50,27 +50,49 @@ msgstr ""
 "Tallenna alla olevat asetukset ja käytä tätä lyhytkoodia Bluesky-viestien "
 "näyttämiseen millä tahansa sivulla:"
 
-#: wp-bluesky-posts.php:122
+#: wp-bluesky-posts.php:126
 msgid "Create your APP password here:"
 msgstr "Luo APP-salasanasi täällä:"
 
-#: wp-bluesky-posts.php:148
+#: wp-bluesky-posts.php:154
 msgid "Your Bluesky username"
 msgstr "Bluesky-käyttäjänimesi"
 
-#: wp-bluesky-posts.php:151
+#: wp-bluesky-posts.php:157
 msgid "Your Bluesky APP password"
 msgstr "Bluesky APP -salasanasi"
 
-#: wp-bluesky-posts.php:154
+#: wp-bluesky-posts.php:160
 msgid "Author whose posts to display"
 msgstr "Kirjoittaja, jonka viestit näytetään"
 
-#: wp-bluesky-posts.php:160
+#: wp-bluesky-posts.php:163
+msgid "Disable CSS set by this plugin - I want to use my own CSS."
+msgstr ""
+"Poista tämän laajennuksen asettama CSS käytöstä - haluan käyttää omaa CSS:"
+"ää."
+
+#: wp-bluesky-posts.php:168
 msgid "Save settings"
 msgstr "Tallenna asetukset"
 
-#: wp-bluesky-posts.php:167
+#: wp-bluesky-posts.php:175
+msgid ""
+"By default the shortcode displays 12 posts. You can specify the amount like "
+"the examples below."
+msgstr ""
+"Oletuksena lyhytkoodi näyttää 12 viestiä. Voit määrittää määrän alla "
+"olevien esimerkkien mukaisesti."
+
+#: wp-bluesky-posts.php:177
+msgid "To display only one post, use this shortcode:"
+msgstr "Jos haluat näyttää vain yhden viestin, käytä tätä lyhytkoodia:"
+
+#: wp-bluesky-posts.php:178
+msgid "To display 12 posts, use this shotcode:"
+msgstr "Jos haluat näyttää 12 viestiä, käytä tätä lyhytkoodia:"
+
+#: wp-bluesky-posts.php:180
 msgid "See this plugins source code and get the latest version from here:"
 msgstr "Katso tämän lisäosan lähdekoodi ja hae uusin versio täältä:"
 
