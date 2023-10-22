@@ -411,7 +411,7 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 												$return_html .= '<div class="bsky-embeds-record"><blockquote>';
 
 												// Avatar
-												$return_html .= '<img src="' . $bsky_post['post']['embed']['record']['author']['avatar'] . '" alt="" width="60" hspace="10"align="left">';
+												$return_html .= '<img src="' . $bsky_post['post']['embed']['record']['author']['avatar'] . '" alt="" width="60" hspace="10" align="left">';
 
 												// Username
 												$return_html .= '<a href="https://bsky.app/profile/'.$bsky_post['post']['embed']['record']['author']['handle'].'" target="_blank">' . htmlentities( $bsky_post['post']['embed']['record']['author']['displayName'] ) . '</a><br>';
@@ -430,6 +430,28 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 												$return_html .= '</div> <!--bsky-item-embed-record-text -->';
 
 												$return_html .= '</blockquote></div> <!-- bsky-embeds-record -->';
+
+											}
+
+										}
+
+										// External link
+
+										if( array_key_exists( 'external', $bsky_post['post']['embed'] ) ) {
+
+											if( $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.external#view' ) {
+
+												$return_html .= '<div class="bsky-embeds-external"><blockquote>';
+
+												// Thumbnail
+												$return_html .= '<img src="' . $bsky_post['post']['embed']['external']['thumb'] . '" alt="" width="40" hspace="10" align="left">';
+
+												$return_html .= '<a href="'.$bsky_post['post']['embed']['external']['uri'].'" target="_blank">';
+												$return_html .= '<strong>' . htmlentities( $bsky_post['post']['embed']['external']['title'] ) . '</strong><br>';
+												$return_html .= htmlentities( $bsky_post['post']['embed']['external']['description'] );
+												$return_html .= '</a><br>';
+
+												$return_html .= '</blockquote></div> <!-- bsky-embeds-external -->';
 
 											}
 
