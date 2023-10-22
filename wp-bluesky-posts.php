@@ -402,6 +402,39 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 									if( array_key_exists( 'embed', $bsky_post['post'] ) ) {
 
+										// Quoted post
+
+										if( array_key_exists( 'record', $bsky_post['post']['embed'] ) ) {
+
+											if( $bsky_post['post']['embed']['record']['$type'] == 'app.bsky.embed.record#viewRecord' ) {
+
+												$return_html .= '<div class="bsky-embeds-record"><blockquote>';
+
+												// Avatar
+												$return_html .= '<img src="' . $bsky_post['post']['embed']['record']['author']['avatar'] . '" alt="" width="60" hspace="10"align="left">';
+
+												// Username
+												$return_html .= '<a href="https://bsky.app/profile/'.$bsky_post['post']['embed']['record']['author']['handle'].'" target="_blank">' . htmlentities( $bsky_post['post']['embed']['record']['author']['displayName'] ) . '</a><br>';
+
+												// We need post ID for the link... This is very ugly.
+												$link_parts = explode( 'app.bsky.feed.post/', $bsky_post['post']['embed']['record']['uri'] );
+
+												// Timestamp incl. link to post.
+												$return_html .= '<small><a href="https://bsky.app/profile/' . $bsky_post['post']['embed']['record']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank">' . date( $date_time_format, strtotime( $bsky_post['post']['embed']['record']['value']['createdAt'] ) ) . '</a></small>';
+
+												$return_html .= '<div class="bsky-item-embed-record-text"><p>';
+
+													// The content
+													$return_html .= nl2br( $bsky_post['post']['embed']['record']['value']['text'], false );
+
+												$return_html .= '</div> <!--bsky-item-embed-record-text -->';
+
+												$return_html .= '</blockquote></div> <!-- bsky-embeds-record -->';
+
+											}
+
+										}
+
 										// Images
 
 										if( array_key_exists( 'images', $bsky_post['post']['embed'] ) ) {
