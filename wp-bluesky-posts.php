@@ -379,24 +379,45 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 										$return_html .= '</p></div> <!--bsky-user-and-created -->';
 
-										$return_html .= '<div class="bsky-item-text"><p>';
+										$return_html .= '<div class="bsky-item-text">';
+
+										$return_html .= '<p>';
 
 										// The content
-										$return_html .= nl2br( $bsky_post['post']['record']['text'], false );
 
-										/*
+										if( array_key_exists( 'record', $bsky_post['post'] ) && array_key_exists( 'facets', $bsky_post['post']['record'] ) ) {
 
-										TODO:
+											// We seem to have links. Let's make them clickable in the content.
 
-										if post includes links we could list them somehow
-										$bsky_post['post']['record']['facets'] array
-										$bsky_post['post']['record']['facets'][x][features] array
-										$bsky_post['post']['record']['facets'][x][features][x]['$type'] == 'app.bsky.richtext.facet#link'
-										$bsky_post['post']['record']['facets'][x][features][x][uri]
+											$replace = array();
 
-										*/
+											foreach( $bsky_post['post']['record']['facets'] as $link ) {
 
-									$return_html .= '</p>';
+												if( array_key_exists( 'features', $link ) && is_array( $link['features'] ) && !empty( $link['features'] ) ) {
+
+													$uri = $link['features'][0]['uri'];
+
+													$length = $link['index']['byteEnd'] - $link['index']['byteStart'];
+
+													$replace_this = substr( $bsky_post['post']['record']['text'], $link['index']['byteStart'], $length );
+
+													$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
+
+												}
+
+											}
+
+											$return_html .= nl2br( str_replace( array_keys( $replace ), $replace, $bsky_post['post']['record']['text'] ), false );
+
+										}
+										else {
+
+											// We have no rich content. Output as plain text.
+											$return_html .= nl2br( $bsky_post['post']['record']['text'], false );
+
+										}
+
+										$return_html .= '</p>';
 
 									// Embeds
 
@@ -480,7 +501,7 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 									}
 
-									$return_html .= '</div> <!--bsky-item-content -->';
+									$return_html .= '</div> <!--bsky-item-text -->';
 
 									$return_html .= '<div class="bsky-item-stats"><p><small>';
 
