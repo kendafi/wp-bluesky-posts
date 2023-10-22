@@ -256,6 +256,11 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 			$curl = curl_init();
 
+			$postdata = array(
+				'identifier' => $wp_bluesky_username,
+				'password' => $wp_bluesky_password
+			);
+
 			curl_setopt_array(
 				$curl,
 				array(
@@ -267,10 +272,7 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 					CURLOPT_TIMEOUT => 0,
 					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 					CURLOPT_CUSTOMREQUEST => 'POST',
-					CURLOPT_POSTFIELDS => '{
-						"identifier":"' . $wp_bluesky_username . '",
-						"password":"' . $wp_bluesky_password . '"
-					}',
+					CURLOPT_POSTFIELDS => json_encode( $postdata ),
 					CURLOPT_HTTPHEADER => array(
 						'Content-Type: application/json'
 					),
