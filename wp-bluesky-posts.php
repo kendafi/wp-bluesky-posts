@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Bluesky posts
  * Description: This enables the shortcode [bluesky-posts] that outputs a specific users Bluesky posts based on your settings.
- * Version: 2023.10.22
+ * Version: 2023.10.23
  * Update URI: https://github.com/kendafi/wp-bluesky-posts/
  * Author: Kenda
  * Author URI: https://kenda.fi/
