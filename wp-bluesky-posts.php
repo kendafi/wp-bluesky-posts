@@ -395,13 +395,24 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 												if( array_key_exists( 'features', $link ) && is_array( $link['features'] ) && !empty( $link['features'] ) ) {
 
-													$uri = $link['features'][0]['uri'];
+													if( $link['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
 
-													$length = $link['index']['byteEnd'] - $link['index']['byteStart'];
+														// Hashtag - TODO when this is officially supported
 
-													$replace_this = substr( $bsky_post['post']['record']['text'], $link['index']['byteStart'], $length );
+													}
+													elseif( $link['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
 
-													$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
+														// Link
+
+														$uri = $link['features'][0]['uri'];
+
+														$length = $link['index']['byteEnd'] - $link['index']['byteStart'];
+
+														$replace_this = substr( $bsky_post['post']['record']['text'], $link['index']['byteStart'], $length );
+
+														$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
+
+													}
 
 												}
 

@@ -6,5 +6,10 @@ This enables a WordPress shortcode which displays posts from Bluesky according t
 
 It displays a specific users original posts only. Replies and re-posts are skipped.
 
-You may want to add at least a max width to `div.bsky-wrapper`.
-See other CSS classes by inspecting HTML output.
+By default it displays 12 posts. You can specify this with attribute `amount`.
+For example to display only one post, use this shortcode.
+
+	[bluesky-posts amount=1]
+
+The plugin has some basic CSS, but it should use your sites font and color for the text.
+You can turn off the plugin CSS if you want to style it completely yourself.
