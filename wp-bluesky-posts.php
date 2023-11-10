@@ -175,7 +175,7 @@ function wp_bluesky_posts_page_content() {
 	echo '<p>'.esc_html__( 'By default the shortcode displays 12 posts. You can specify the amount like the examples below.', 'wp-bluesky-posts' ).'</p>';
 
 	echo '<p>'.esc_html__( 'To display only one post, use this shortcode:', 'wp-bluesky-posts' ).' <code>[bluesky-posts amount=1]</code></p>';
-	echo '<p>'.esc_html__( 'To display 12 posts, use this shotcode:', 'wp-bluesky-posts' ).'<code>[bluesky-posts amount=12]</code></p>';
+	echo '<p>'.esc_html__( 'To display 12 posts, use this shortcode:', 'wp-bluesky-posts' ).'<code>[bluesky-posts amount=12]</code></p>';
 
 	echo '<p>'.esc_html__( 'See this plugins source code and get the latest version from here:', 'wp-bluesky-posts' ).' <a href="https://github.com/kendafi/wp-bluesky-posts/" target="_blank">github.com/kendafi/wp-bluesky-posts</a></p>';
 
@@ -436,7 +436,14 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 										// Quoted post
 
-										if( array_key_exists( 'record', $bsky_post['post']['embed'] ) ) {
+										if( array_key_exists( '$type', $bsky_post['post']['embed'] ) && $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.recordWithMedia#view' ) {
+
+											// We have both images and quoted post
+
+										}
+										elseif( array_key_exists( 'record', $bsky_post['post']['embed'] ) ) {
+
+											// Quoted post only
 
 											if( $bsky_post['post']['embed']['record']['$type'] == 'app.bsky.embed.record#viewRecord' ) {
 

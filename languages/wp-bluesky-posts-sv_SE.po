@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2023-10-21 23:36+0300\n"
-"PO-Revision-Date: 2023-10-21 23:36+0300\n"
+"POT-Creation-Date: 2023-11-10 21:56+0200\n"
+"PO-Revision-Date: 2023-11-10 21:56+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -89,7 +89,7 @@ msgid "To display only one post, use this shortcode:"
 msgstr "För att visa endast ett inlägg, använd den här kortkoden:"
 
 #: wp-bluesky-posts.php:178
-msgid "To display 12 posts, use this shotcode:"
+msgid "To display 12 posts, use this shortcode:"
 msgstr "För att visa 12 inlägg, använd den här kortkoden:"
 
 #: wp-bluesky-posts.php:180
@@ -111,3 +111,6 @@ msgstr "Kenda"
 #. Author URI of the plugin/theme
 msgid "https://kenda.fi/"
 msgstr "https://kenda.fi/"
+
+#~ msgid "To display 12 posts, use this shotcode:"
+#~ msgstr "För att visa 12 inlägg, använd den här kortkoden:"
