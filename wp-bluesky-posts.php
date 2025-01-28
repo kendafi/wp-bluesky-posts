@@ -247,34 +247,51 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 			if ( $wp_bluesky_author != '' ) {
 
-				$curl = curl_init();
+				if( $data = get_transient( 'wp_bluesky_posts' ) ) {
 
-				curl_setopt_array(
-					$curl,
-					array(
-						CURLOPT_URL => 'https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=' . $wp_bluesky_author . '&limit=' . $bsky_amount . '&filter=posts_no_replies',
-						CURLOPT_RETURNTRANSFER => true,
-						CURLOPT_ENCODING => '',
-						CURLOPT_FOLLOWLOCATION => true,
-						CURLOPT_MAXREDIRS => 10,
-						CURLOPT_TIMEOUT => 0,
-						CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-						CURLOPT_CUSTOMREQUEST => 'GET',
-					)
-				);
-
-				if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
-
-					// skip SSL in localhost in case it doesn't support that
-					curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, 0 );
+					// We have data!
 
 				}
+				else {
 
-				$response = curl_exec( $curl );
+					// Fetch fresh data.
 
-				$data = json_decode( $response, TRUE );
+					$curl = curl_init();
 
-				curl_close( $curl );
+					curl_setopt_array(
+						$curl,
+						array(
+							CURLOPT_URL => 'https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=' . $wp_bluesky_author . '&limit=' . $bsky_amount . '&filter=posts_no_replies',
+							CURLOPT_RETURNTRANSFER => true,
+							CURLOPT_ENCODING => '',
+							CURLOPT_FOLLOWLOCATION => true,
+							CURLOPT_MAXREDIRS => 10,
+							CURLOPT_TIMEOUT => 0,
+							CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+							CURLOPT_CUSTOMREQUEST => 'GET',
+						)
+					);
+
+					if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
+
+						// skip SSL in localhost in case it doesn't support that
+						curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, 0 );
+
+					}
+
+					$response = curl_exec( $curl );
+
+					$data = json_decode( $response, TRUE );
+
+					curl_close( $curl );
+
+					// Store data in transient for 10 minutes.
+
+					$transient_lifespan_seconds = 600;
+
+					set_transient( 'wp_bluesky_posts', $data, $transient_lifespan_seconds );
+
+				}
 
 				if( is_array( $data ) && !empty( $data ) && array_key_exists( 'feed', $data ) ) {
 

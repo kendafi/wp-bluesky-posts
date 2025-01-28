@@ -14,11 +14,8 @@ For example to display only one post, use this shortcode.
 The plugin has some basic CSS, but it should use your sites font and color for the text.
 You can turn off the plugin CSS if you want to style it completely yourself.
 
-## Preparations
-
-You will need a Bluesky app password.
-
-Create your APP password here: [bsky.app/settings/app-passwords](https://bsky.app/settings/app-passwords)
+The plugin stores fetched content into transients. This means we ping Bluesky
+only once every 10 minutes to avoid exceeding any connection limits.
 
 ## Install
 
@@ -30,7 +27,7 @@ Click on Upload Plugin button, and then on the Browse button to select the ZIP f
 
 Activate the plugin.
 
-Go in WP admin to Settings > Bluesky post. Enter your username, your app password, and the account which posts you want to display. Save settings.
+Go in WP admin to Settings > Bluesky post. Enter the account which posts you want to display. Save settings.
 
 Go to any page and add the shortcode `[bluesky-posts]` to its content.
 
