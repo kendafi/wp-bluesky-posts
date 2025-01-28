@@ -430,9 +430,10 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 										}
 
-										// Images
 
 										if( array_key_exists( 'images', $bsky_post['post']['embed'] ) ) {
+
+											// Images
 
 											$return_html .= '<div class="bsky-embeds-images">';
 
@@ -445,11 +446,19 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 											$return_html .= '</div> <!-- bsky-embeds-images -->';
 
 										}
+										elseif( array_key_exists( '$type', $bsky_post['post']['embed'] ) && $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.video#view' ) {
 
-										// At the moment Bluesky does not support videos.
-										// But some day it may do that and we can do something like this...
-										// elseif( array_key_exists( 'videos', $bsky_post['post']['embed'] ) ) {
-										// }
+											// Video
+											// You can upload a video to Bluesky, but we do not yet get it this data.
+											// But we can display it's thumbnail and link to original post.
+
+											$return_html .= '<div class="bsky-embeds-images"><p>';
+
+											$return_html .= '<a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank"><img src="' . $bsky_post['post']['embed']['thumbnail'] . '" alt="' . $bsky_post['post']['embed']['alt'] . '" width="100%"></a>';
+
+											$return_html .= '</p></div> <!-- bsky-embeds-images -->';
+
+										}
 
 									}
 
