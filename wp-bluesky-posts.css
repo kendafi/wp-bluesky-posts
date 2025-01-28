@@ -1,7 +1,7 @@
 
 .bsky-wrapper {
 
-  display: grid;
+	display: grid;
 	column-gap: 20px;
 	row-gap: 20px;
 	justify-content: center;
@@ -22,6 +22,8 @@
 }
 
 .bsky-item {
+	display: flex;
+	flex-flow: column;
 	padding: 20px;
 	border: 1px solid gray;
 	border-radius: 10px;
@@ -52,6 +54,7 @@
 }
 
 .bsky-item-stats {
+	margin-top: auto;
 	opacity: 0.5;
 }
 
