@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2025-01-28 14:55+0200\n"
-"PO-Revision-Date: 2025-01-28 14:59+0200\n"
+"POT-Creation-Date: 2025-01-28 15:07+0200\n"
+"PO-Revision-Date: 2025-01-28 15:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -58,17 +58,21 @@ msgstr "Författare vars inlägg ska visas"
 msgid "Date format"
 msgstr "Datumformat"
 
-#: wp-bluesky-posts.php:155
+#: wp-bluesky-posts.php:153
+msgid "Read more about datetime format parameters:"
+msgstr "Läs mer om parametrar för datetime-format:"
+
+#: wp-bluesky-posts.php:157
 msgid "Disable CSS set by this plugin - I want to use my own CSS."
 msgstr ""
 "Inaktivera CSS som ställts in av detta tillägg - jag vill använda min egen "
 "CSS."
 
-#: wp-bluesky-posts.php:160
+#: wp-bluesky-posts.php:162
 msgid "Save settings"
 msgstr "Spara inställningar"
 
-#: wp-bluesky-posts.php:167
+#: wp-bluesky-posts.php:169
 msgid ""
 "By default the shortcode displays 12 posts. You can specify the amount like "
 "the examples below."
@@ -76,23 +80,23 @@ msgstr ""
 "Som standard visar kortkoden 12 inlägg. Du kan ange antalet enligt i "
 "exemplen nedan."
 
-#: wp-bluesky-posts.php:169
+#: wp-bluesky-posts.php:171
 msgid "To display only one post, use this shortcode:"
 msgstr "För att visa endast ett inlägg, använd den här kortkoden:"
 
-#: wp-bluesky-posts.php:170
+#: wp-bluesky-posts.php:172
 msgid "To display 12 posts, use this shortcode:"
 msgstr "För att visa 12 inlägg, använd den här kortkoden:"
 
-#: wp-bluesky-posts.php:172
+#: wp-bluesky-posts.php:174
 msgid "See this plugins source code and get the latest version from here:"
 msgstr "Se detta tilläggs källkod och hämta den senaste versionen härifrån:"
 
-#: wp-bluesky-posts.php:174
+#: wp-bluesky-posts.php:176
 msgid "Do you like this free plugin?"
 msgstr "Gillar du detta gratis tillägget?"
 
-#: wp-bluesky-posts.php:175
+#: wp-bluesky-posts.php:177
 msgid "Please, donate energy drink money to the developer!"
 msgstr "Vänligen donera en slant till energidryck åt utvecklaren!"
 

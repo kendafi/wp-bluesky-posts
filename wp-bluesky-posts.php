@@ -150,6 +150,8 @@ function wp_bluesky_posts_page_content() {
 	<input type="text" name="wp_bluesky_author" id="wp_bluesky_author" placeholder="example.bsky.social" value="'.esc_html( $wp_bluesky_author ).'" class="regular-text"></p>
 
 	<p><label for="wp_bluesky_dateformat">'.esc_html__( 'Date format', 'wp-bluesky-posts' ).'</label><br>
+	'.esc_html__( 'Read more about datetime format parameters:', 'wp-bluesky-posts' ).'
+	<a href="https://www.php.net/manual/en/datetime.format.php#refsect1-datetime.format-parameters" target="_blank">PHP: DateTimeInterface::format</a><br>
 	<input type="text" name="wp_bluesky_dateformat" id="wp_bluesky_dateformat" placeholder="j.n.Y @ H:i" value="'.esc_html( $wp_bluesky_dateformat ).'" class="regular-text"></p>
 
 	<p><input type="checkbox" name="wp_bluesky_disablecss" id="wp_bluesky_disablecss" value="1"' . ( $wp_bluesky_disablecss == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disablecss">'.esc_html__( 'Disable CSS set by this plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>';

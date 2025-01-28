@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2025-01-28 14:56+0200\n"
-"PO-Revision-Date: 2025-01-28 15:00+0200\n"
+"POT-Creation-Date: 2025-01-28 15:07+0200\n"
+"PO-Revision-Date: 2025-01-28 15:08+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -58,16 +58,20 @@ msgstr "Kirjoittaja, jonka viestit näytetään"
 msgid "Date format"
 msgstr "Päivämäärän muotoilu"
 
-#: wp-bluesky-posts.php:155
+#: wp-bluesky-posts.php:153
+msgid "Read more about datetime format parameters:"
+msgstr "Lue lisää päivä- ja aikaparametreistä:"
+
+#: wp-bluesky-posts.php:157
 msgid "Disable CSS set by this plugin - I want to use my own CSS."
 msgstr ""
 "Poista tämän laajennuksen asettama CSS käytöstä - haluan käyttää omaa CSS:ää."
 
-#: wp-bluesky-posts.php:160
+#: wp-bluesky-posts.php:162
 msgid "Save settings"
 msgstr "Tallenna asetukset"
 
-#: wp-bluesky-posts.php:167
+#: wp-bluesky-posts.php:169
 msgid ""
 "By default the shortcode displays 12 posts. You can specify the amount like "
 "the examples below."
@@ -75,23 +79,23 @@ msgstr ""
 "Oletuksena lyhytkoodi näyttää 12 viestiä. Voit määrittää määrän alla olevien "
 "esimerkkien mukaisesti."
 
-#: wp-bluesky-posts.php:169
+#: wp-bluesky-posts.php:171
 msgid "To display only one post, use this shortcode:"
 msgstr "Jos haluat näyttää vain yhden viestin, käytä tätä lyhytkoodia:"
 
-#: wp-bluesky-posts.php:170
+#: wp-bluesky-posts.php:172
 msgid "To display 12 posts, use this shortcode:"
 msgstr "Jos haluat näyttää 12 viestiä, käytä tätä lyhytkoodia:"
 
-#: wp-bluesky-posts.php:172
+#: wp-bluesky-posts.php:174
 msgid "See this plugins source code and get the latest version from here:"
 msgstr "Katso tämän lisäosan lähdekoodi ja hae uusin versio täältä:"
 
-#: wp-bluesky-posts.php:174
+#: wp-bluesky-posts.php:176
 msgid "Do you like this free plugin?"
 msgstr "Pidätkö tästä ilmaisesta lisäosasta?"
 
-#: wp-bluesky-posts.php:175
+#: wp-bluesky-posts.php:177
 msgid "Please, donate energy drink money to the developer!"
 msgstr "Lahjoita muutama lantti energiajuomiin koodarille!"
 
