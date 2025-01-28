@@ -325,26 +325,45 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 											$replace = array();
 
-											foreach( $bsky_post['post']['record']['facets'] as $link ) {
+											foreach( $bsky_post['post']['record']['facets'] as $facet ) {
 
-												if( array_key_exists( 'features', $link ) && is_array( $link['features'] ) && !empty( $link['features'] ) ) {
+												if( array_key_exists( 'features', $facet ) && is_array( $facet['features'] ) && !empty( $facet['features'] ) ) {
 
-													if( $link['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
+													if( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
 
-														// Hashtag - TODO when this is officially supported
+														// Hashtag
+
+														$tag = $facet['features'][0]['tag'];
+
+														$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+														$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
+
+														$replace[ $replace_this ] = '<a href="https://bsky.app/hashtag/' . $tag . '" target="_blank">' . $replace_this . '</a>';
 
 													}
-													elseif( $link['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
+													elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
 
 														// Link
 
-														$uri = $link['features'][0]['uri'];
+														$uri = $facet['features'][0]['uri'];
 
-														$length = $link['index']['byteEnd'] - $link['index']['byteStart'];
+														$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
 
-														$replace_this = substr( $bsky_post['post']['record']['text'], $link['index']['byteStart'], $length );
+														$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
 
 														$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
+
+													}
+													elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#mention' ) {
+
+														// Username
+
+														$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+														$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
+
+														$replace[ $replace_this ] = '<a href="https://bsky.app/profile/' . str_replace( '@', '', $replace_this ) . '" target="_blank">' . $replace_this . '</a>';
 
 													}
 
@@ -397,8 +416,69 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 												$return_html .= '<div class="bsky-item-embed-record-text"><p>';
 
-													// The content
+												// The content of quoted post
+
+												if( array_key_exists( 'record', $bsky_post['post']['embed'] ) && array_key_exists( 'value', $bsky_post['post']['embed']['record'] ) && array_key_exists( 'facets', $bsky_post['post']['embed']['record']['value'] ) ) {
+
+													// We seem to have links. Let's make them clickable in the content.
+
+													$replace = array();
+
+													foreach( $bsky_post['post']['embed']['record']['value']['facets'] as $facet ) {
+
+														if( array_key_exists( 'features', $facet ) && is_array( $facet['features'] ) && !empty( $facet['features'] ) ) {
+
+															if( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
+
+																// Hashtag
+
+																$tag = $facet['features'][0]['tag'];
+
+																$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+																$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
+
+																$replace[ $replace_this ] = '<a href="https://bsky.app/hashtag/' . $tag . '" target="_blank">' . $replace_this . '</a>';
+
+															}
+															elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
+
+																	// Link
+
+																$uri = $facet['features'][0]['uri'];
+
+																$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+																$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
+
+																$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
+
+															}
+															elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#mention' ) {
+
+																// Username
+
+																$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+																$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
+
+																$replace[ $replace_this ] = '<a href="https://bsky.app/profile/' . str_replace( '@', '', $replace_this ) . '" target="_blank">' . $replace_this . '</a>';
+
+															}
+
+														}
+
+													}
+
+													$return_html .= nl2br( str_replace( array_keys( $replace ), $replace, $bsky_post['post']['embed']['record']['value']['text'] ), false );
+
+												}
+												else {
+
+													// We have no rich content. Output as plain text.
 													$return_html .= nl2br( $bsky_post['post']['embed']['record']['value']['text'], false );
+
+												}
 
 												$return_html .= '</div> <!--bsky-item-embed-record-text -->';
 
