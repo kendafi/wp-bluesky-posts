@@ -171,6 +171,9 @@ function wp_bluesky_posts_page_content() {
 
 	echo '<p>'.esc_html__( 'See this plugins source code and get the latest version from here:', 'wp-bluesky-posts' ).' <a href="https://github.com/kendafi/wp-bluesky-posts/" target="_blank">github.com/kendafi/wp-bluesky-posts</a></p>';
 
+	echo '<p class="wp-bluesky-posts-donate">'.esc_html__( 'Do you like this free plugin?', 'wp-bluesky-posts' );
+	echo ' <a href="https://www.paypal.com/donate/?business=AV6TG9TLCC2LC&amp;no_recurring=0&amp;tem_name=Support+this+developer+that+creates+free-to-use+tools+and+open+source+plugins.&amp;item_number=Enter+a+value+below:&amp;currency_code=EUR" target="_blank">'.esc_html__( 'Please, donate energy drink money to the developer!', 'wp-bluesky-posts' ).'</a></p>';
+
 	echo '</div> <!-- wrap -->';
 
 }

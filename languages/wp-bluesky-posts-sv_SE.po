@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2025-01-28 11:13+0200\n"
-"PO-Revision-Date: 2025-01-28 11:14+0200\n"
+"POT-Creation-Date: 2025-01-28 14:55+0200\n"
+"PO-Revision-Date: 2025-01-28 14:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -87,6 +87,14 @@ msgstr "För att visa 12 inlägg, använd den här kortkoden:"
 #: wp-bluesky-posts.php:172
 msgid "See this plugins source code and get the latest version from here:"
 msgstr "Se detta tilläggs källkod och hämta den senaste versionen härifrån:"
+
+#: wp-bluesky-posts.php:174
+msgid "Do you like this free plugin?"
+msgstr "Gillar du detta gratis tillägget?"
+
+#: wp-bluesky-posts.php:175
+msgid "Please, donate energy drink money to the developer!"
+msgstr "Vänligen donera en slant till energidryck åt utvecklaren!"
 
 #. Description of the plugin/theme
 msgid ""
