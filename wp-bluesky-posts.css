@@ -1,18 +1,36 @@
 
 .bsky-wrapper {
 
-  display: flex;
-	flex-wrap: wrap;
+  display: grid;
+	column-gap: 20px;
+	row-gap: 20px;
+	justify-content: center;
+	clear: both;
 
 }
 
+@media only screen and (min-width: 700px) {
+	.bsky-wrapper {
+		grid-template-columns: auto auto;
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+	.bsky-wrapper {
+		grid-template-columns: auto auto auto;
+	}
+}
+
 .bsky-item {
-	max-width: 380px;
 	padding: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
 	border: 1px solid gray;
 	border-radius: 10px;
+}
+
+@media only screen and (min-width: 700px) {
+	.bsky-item {
+		max-width: 330px;
+	}
 }
 
 .bsky-item p {

@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Bluesky posts
  * Description: This enables the shortcode [bluesky-posts] that outputs a specific users Bluesky posts based on your settings.
- * Version: 2023.10.23
+ * Version: 2025.1.28
  * Update URI: https://github.com/kendafi/wp-bluesky-posts/
  * Author: Kenda
  * Author URI: https://kenda.fi/
@@ -101,11 +101,9 @@ function wp_bluesky_posts_page_content() {
 
 	// Handle submitted data.
 
-	if ( isset( $_POST[ 'wp_bluesky_username' ] ) && isset( $_POST[ 'wp_bluesky_password' ] ) && isset( $_POST[ 'wp_bluesky_author' ] ) ) {
+	if ( isset( $_POST[ 'wp_bluesky_author' ] ) ) {
 
 		$wp_bluesky_posts_settings = array(
-			'wp_bluesky_username' => str_replace( '@', '', trim( $_POST[ 'wp_bluesky_username' ] ) ),
-			'wp_bluesky_password' => trim( $_POST[ 'wp_bluesky_password' ] ),
 			'wp_bluesky_author' => str_replace( '@', '', trim( $_POST[ 'wp_bluesky_author' ] ) )
 		);
 
@@ -123,10 +121,6 @@ function wp_bluesky_posts_page_content() {
 
 	echo '<p>'.esc_html__( 'Save settings below and use this shortcode to display Bluesky posts on any page:', 'wp-bluesky-posts' ).' <code>[bluesky-posts]</code></p>';
 
-	echo '<p>'.esc_html__( 'Create your APP password here:', 'wp-bluesky-posts' ).' <a href="https://bsky.app/settings/app-passwords" target="_blank">bsky.app/settings/app-passwords</a></p>';
-
-	$wp_bluesky_username = '';
-	$wp_bluesky_password = '';
 	$wp_bluesky_author = '';
 	$wp_bluesky_disablecss = '';
 
@@ -139,8 +133,6 @@ function wp_bluesky_posts_page_content() {
 
 		if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
 
-			$wp_bluesky_username = $wp_bluesky_posts_settings['wp_bluesky_username'];
-			$wp_bluesky_password = $wp_bluesky_posts_settings['wp_bluesky_password'];
 			$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
 			$wp_bluesky_disablecss = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
 
@@ -150,12 +142,6 @@ function wp_bluesky_posts_page_content() {
 
 	echo '
 	<form method="post" action="'.esc_url( admin_url( 'options-general.php' ) ).'?page=wp-bluesky-posts">
-
-	<p><label for="wp_bluesky_username">'.esc_html__( 'Your Bluesky username', 'wp-bluesky-posts' ).'</label><br>
-	<input type="text" name="wp_bluesky_username" id="wp_bluesky_username" placeholder="example.bsky.social" value="'.esc_html( $wp_bluesky_username ).'" class="regular-text"></p>
-
-	<p><label for="wp_bluesky_password">'.esc_html__( 'Your Bluesky APP password', 'wp-bluesky-posts' ).'</label><br>
-	<input type="text" name="wp_bluesky_password" id="wp_bluesky_password" placeholder="xxxx-xxxx-xxxx-xxxx" value="'.esc_html( $wp_bluesky_password ).'" class="regular-text"></p>
 
 	<p><label for="wp_bluesky_author">'.esc_html__( 'Author whose posts to display', 'wp-bluesky-posts' ).'</label><br>
 	<input type="text" name="wp_bluesky_author" id="wp_bluesky_author" placeholder="example.bsky.social" value="'.esc_html( $wp_bluesky_author ).'" class="regular-text"></p>
@@ -250,58 +236,16 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 		if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
 
-			$wp_bluesky_username = $wp_bluesky_posts_settings['wp_bluesky_username'];
-			$wp_bluesky_password = $wp_bluesky_posts_settings['wp_bluesky_password'];
 			$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
 
-			$curl = curl_init();
-
-			$postdata = array(
-				'identifier' => $wp_bluesky_username,
-				'password' => $wp_bluesky_password
-			);
-
-			curl_setopt_array(
-				$curl,
-				array(
-					CURLOPT_URL => 'https://bsky.social/xrpc/com.atproto.server.createSession',
-					CURLOPT_RETURNTRANSFER => true,
-					CURLOPT_ENCODING => '',
-					CURLOPT_FOLLOWLOCATION => true,
-					CURLOPT_MAXREDIRS => 10,
-					CURLOPT_TIMEOUT => 0,
-					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-					CURLOPT_CUSTOMREQUEST => 'POST',
-					CURLOPT_POSTFIELDS => json_encode( $postdata ),
-					CURLOPT_HTTPHEADER => array(
-						'Content-Type: application/json'
-					),
-				)
-			);
-
-			if( $_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == 'wordpress.xx' ) {
-
-				// skip SSL in localhost in case it doesn't support that
-				curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, 0 );
-
-			}
-
-			$response = curl_exec( $curl );
-
-			curl_close( $curl );
-
-			$session = json_decode( $response, TRUE );
-
-			if ( is_array( $session ) && !empty( $session ) && array_key_exists( 'accessJwt', $session ) ) {
-
-				$fetch_amount = 100;
+			if ( $wp_bluesky_author != '' ) {
 
 				$curl = curl_init();
 
 				curl_setopt_array(
 					$curl,
 					array(
-						CURLOPT_URL => 'https://bsky.social/xrpc/app.bsky.feed.getAuthorFeed?actor=' . $wp_bluesky_author . '&limit=' . $fetch_amount,
+						CURLOPT_URL => 'https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=' . $wp_bluesky_author . '&limit=' . $bsky_amount . '&filter=posts_no_replies',
 						CURLOPT_RETURNTRANSFER => true,
 						CURLOPT_ENCODING => '',
 						CURLOPT_FOLLOWLOCATION => true,
@@ -309,10 +253,6 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 						CURLOPT_TIMEOUT => 0,
 						CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 						CURLOPT_CUSTOMREQUEST => 'GET',
-						CURLOPT_HTTPHEADER => array(
-							'Content-Type: application/json',
-							'Authorization: Bearer ' . $session['accessJwt']
-						),
 					)
 				);
 
@@ -328,15 +268,6 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 				$data = json_decode( $response, TRUE );
 
 				curl_close( $curl );
-
-				// If you set $fetch_amount to something big to make sure you get enough
-				// original posts even if some are skipped, then you can limit the amount
-				// of displayed posts here.
-
-				$display_limit = $bsky_amount;
-
-				// Do not change this. It is used to stop the loop when we hit $display_limit.
-				$display_loop = 0;
 
 				$date_time_format = 'j.n.Y @ H:i';
 
@@ -358,8 +289,6 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 							// we can exclude all re-posts of someone elses post.
 
 							if( $wp_bluesky_author == $bsky_post['post']['author']['handle'] ) {
-
-								$display_loop++;
 
 								$return_html .= '<div class="bsky-item">';
 
@@ -478,7 +407,7 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 										if( array_key_exists( 'external', $bsky_post['post']['embed'] ) ) {
 
-											if( $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.external#view' ) {
+											if( $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.external#view' && array_key_exists( 'thumb', $bsky_post['post']['embed']['external'] ) ) {
 
 												$return_html .= '<div class="bsky-embeds-external"><blockquote>';
 
@@ -533,13 +462,6 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 								$return_html .= '</div> <!-- bsky-item -->';
 
 							}
-
-						}
-
-						if( $display_loop == $display_limit ) {
-
-							// Stop the loop since we are displaying enough.
-							break;
 
 						}
 
