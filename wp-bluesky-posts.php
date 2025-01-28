@@ -101,10 +101,11 @@ function wp_bluesky_posts_page_content() {
 
 	// Handle submitted data.
 
-	if ( isset( $_POST[ 'wp_bluesky_author' ] ) ) {
+	if ( isset( $_POST[ 'wp_bluesky_author' ] ) && isset( $_POST[ 'wp_bluesky_dateformat' ] ) ) {
 
 		$wp_bluesky_posts_settings = array(
-			'wp_bluesky_author' => str_replace( '@', '', trim( $_POST[ 'wp_bluesky_author' ] ) )
+			'wp_bluesky_author' => str_replace( '@', '', trim( $_POST[ 'wp_bluesky_author' ] ) ),
+			'wp_bluesky_dateformat' => trim( $_POST[ 'wp_bluesky_dateformat' ] )
 		);
 
 		if ( isset( $_POST[ 'wp_bluesky_disablecss' ] ) ) {
@@ -122,6 +123,7 @@ function wp_bluesky_posts_page_content() {
 	echo '<p>'.esc_html__( 'Save settings below and use this shortcode to display Bluesky posts on any page:', 'wp-bluesky-posts' ).' <code>[bluesky-posts]</code></p>';
 
 	$wp_bluesky_author = '';
+	$wp_bluesky_dateformat = '';
 	$wp_bluesky_disablecss = '';
 
 	// Get any settings we may already have stored.
@@ -134,6 +136,7 @@ function wp_bluesky_posts_page_content() {
 		if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
 
 			$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
+			$wp_bluesky_dateformat = ( array_key_exists( 'wp_bluesky_dateformat', $wp_bluesky_posts_settings ) ? str_replace( '\\\\', '\\', $wp_bluesky_posts_settings['wp_bluesky_dateformat'] ) : 'j.n.Y @ H:i' );
 			$wp_bluesky_disablecss = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
 
 		}
@@ -145,6 +148,9 @@ function wp_bluesky_posts_page_content() {
 
 	<p><label for="wp_bluesky_author">'.esc_html__( 'Author whose posts to display', 'wp-bluesky-posts' ).'</label><br>
 	<input type="text" name="wp_bluesky_author" id="wp_bluesky_author" placeholder="example.bsky.social" value="'.esc_html( $wp_bluesky_author ).'" class="regular-text"></p>
+
+	<p><label for="wp_bluesky_dateformat">'.esc_html__( 'Date format', 'wp-bluesky-posts' ).'</label><br>
+	<input type="text" name="wp_bluesky_dateformat" id="wp_bluesky_dateformat" placeholder="j.n.Y @ H:i" value="'.esc_html( $wp_bluesky_dateformat ).'" class="regular-text"></p>
 
 	<p><input type="checkbox" name="wp_bluesky_disablecss" id="wp_bluesky_disablecss" value="1"' . ( $wp_bluesky_disablecss == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disablecss">'.esc_html__( 'Disable CSS set by this plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>';
 
@@ -237,6 +243,7 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 		if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
 
 			$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
+			$date_time_format = ( array_key_exists( 'wp_bluesky_dateformat', $wp_bluesky_posts_settings ) ? str_replace( '\\\\', '\\', $wp_bluesky_posts_settings['wp_bluesky_dateformat'] ) : 'j.n.Y @ H:i' );
 
 			if ( $wp_bluesky_author != '' ) {
 
@@ -256,7 +263,7 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 					)
 				);
 
-				if( $_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == 'wordpress.xx' ) {
+				if( $_SERVER['HTTP_HOST'] == 'localhost' ) {
 
 					// skip SSL in localhost in case it doesn't support that
 					curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, 0 );
@@ -268,8 +275,6 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 				$data = json_decode( $response, TRUE );
 
 				curl_close( $curl );
-
-				$date_time_format = 'j.n.Y @ H:i';
 
 				if( is_array( $data ) && !empty( $data ) && array_key_exists( 'feed', $data ) ) {
 
