@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2025-01-28 15:07+0200\n"
-"PO-Revision-Date: 2025-01-28 15:08+0200\n"
+"POT-Creation-Date: 2025-04-30 11:49+0300\n"
+"PO-Revision-Date: 2025-04-30 11:51+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -38,11 +38,11 @@ msgstr "Bluesky-viestit"
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Sinulla ei ole riittäviä oikeuksia käyttää tätä sivua."
 
-#: wp-bluesky-posts.php:119
+#: wp-bluesky-posts.php:131
 msgid "Settings are updated."
 msgstr "Asetukset on päivitetty."
 
-#: wp-bluesky-posts.php:123
+#: wp-bluesky-posts.php:135
 msgid ""
 "Save settings below and use this shortcode to display Bluesky posts on any "
 "page:"
@@ -50,28 +50,46 @@ msgstr ""
 "Tallenna alla olevat asetukset ja käytä tätä lyhytkoodia Bluesky-viestien "
 "näyttämiseen millä tahansa sivulla:"
 
-#: wp-bluesky-posts.php:149
+#: wp-bluesky-posts.php:165
 msgid "Author whose posts to display"
 msgstr "Kirjoittaja, jonka viestit näytetään"
 
-#: wp-bluesky-posts.php:152
+#: wp-bluesky-posts.php:168
 msgid "Date format"
 msgstr "Päivämäärän muotoilu"
 
-#: wp-bluesky-posts.php:153
+#: wp-bluesky-posts.php:169
 msgid "Read more about datetime format parameters:"
 msgstr "Lue lisää päivä- ja aikaparametreistä:"
 
-#: wp-bluesky-posts.php:157
+#: wp-bluesky-posts.php:173
 msgid "Disable CSS set by this plugin - I want to use my own CSS."
 msgstr ""
 "Poista tämän laajennuksen asettama CSS käytöstä - haluan käyttää omaa CSS:ää."
 
-#: wp-bluesky-posts.php:162
+#: wp-bluesky-posts.php:175
+msgid ""
+"Disable JavaScript set by this plugin - I want to include hls.js on my own. "
+"Get it from here:"
+msgstr ""
+"Poista tämän laajennuksen asettama JavaScript käytöstä - haluan lisätä "
+"tiedoston hls.js itse. Hae se täältä:"
+
+#: wp-bluesky-posts.php:177
+msgid ""
+"Keep webpage light. Display only image preview of videos instead of making "
+"them all embeds. This automatically disables loading of the JavaScript "
+"whatever its setting is above."
+msgstr ""
+"Pidä verkkosivu kevyenä. Näytä vain videoiden esikatselukuva sen sijaan, "
+"että näyttäisit kaikki videot. Tämä poistaa JavaScriptin lataamisen "
+"automaattisesti käytöstä riippumatta sen yllä olevasta asetuksesta."
+
+#: wp-bluesky-posts.php:182
 msgid "Save settings"
 msgstr "Tallenna asetukset"
 
-#: wp-bluesky-posts.php:169
+#: wp-bluesky-posts.php:189
 msgid ""
 "By default the shortcode displays 12 posts. You can specify the amount like "
 "the examples below."
@@ -79,23 +97,23 @@ msgstr ""
 "Oletuksena lyhytkoodi näyttää 12 viestiä. Voit määrittää määrän alla olevien "
 "esimerkkien mukaisesti."
 
-#: wp-bluesky-posts.php:171
+#: wp-bluesky-posts.php:191
 msgid "To display only one post, use this shortcode:"
 msgstr "Jos haluat näyttää vain yhden viestin, käytä tätä lyhytkoodia:"
 
-#: wp-bluesky-posts.php:172
+#: wp-bluesky-posts.php:192
 msgid "To display 12 posts, use this shortcode:"
 msgstr "Jos haluat näyttää 12 viestiä, käytä tätä lyhytkoodia:"
 
-#: wp-bluesky-posts.php:174
+#: wp-bluesky-posts.php:194
 msgid "See this plugins source code and get the latest version from here:"
 msgstr "Katso tämän lisäosan lähdekoodi ja hae uusin versio täältä:"
 
-#: wp-bluesky-posts.php:176
+#: wp-bluesky-posts.php:196
 msgid "Do you like this free plugin?"
 msgstr "Pidätkö tästä ilmaisesta lisäosasta?"
 
-#: wp-bluesky-posts.php:177
+#: wp-bluesky-posts.php:197
 msgid "Please, donate energy drink money to the developer!"
 msgstr "Lahjoita muutama lantti energiajuomiin koodarille!"
 

@@ -360,297 +360,297 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 								$return_html .= '<div class="bsky-item">';
 
-									$return_html .= '<div class="bsky-user-and-created"><p>';
+								$return_html .= '<div class="bsky-user-and-created"><p>';
 
-										// Avatar
-										$return_html .= '<img src="' . $bsky_post['post']['author']['avatar'] . '" alt="" width="50" hspace="10" align="left">';
+								// Avatar
+								$return_html .= '<img src="' . $bsky_post['post']['author']['avatar'] . '" alt="" width="50" hspace="10" align="left">';
 
-										// Username
-										$return_html .= '<a href="https://bsky.app/profile/'.$bsky_post['post']['author']['handle'].'" target="_blank">' . htmlentities( $bsky_post['post']['author']['displayName'] ) . '</a><br>';
+								// Username
+								$return_html .= '<a href="https://bsky.app/profile/'.$bsky_post['post']['author']['handle'].'" target="_blank">' . htmlentities( $bsky_post['post']['author']['displayName'] ) . '</a><br>';
 
-										// We need post ID for the link... This is very ugly.
-										$link_parts = explode( 'app.bsky.feed.post/', $bsky_post['post']['uri'] );
+								// We need post ID for the link... This is very ugly.
+								$link_parts = explode( 'app.bsky.feed.post/', $bsky_post['post']['uri'] );
 
-										// Timestamp incl. link to post.
-										$return_html .= '<small><a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank">' . date( $date_time_format, strtotime( $bsky_post['post']['record']['createdAt'] ) ) . '</a></small>';
+								// Timestamp incl. link to post.
+								$return_html .= '<small><a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank">' . date( $date_time_format, strtotime( $bsky_post['post']['record']['createdAt'] ) ) . '</a></small>';
 
-										$return_html .= '</p></div> <!--bsky-user-and-created -->';
+								$return_html .= '</p></div> <!--bsky-user-and-created -->';
 
-										$return_html .= '<div class="bsky-item-text">';
+								$return_html .= '<div class="bsky-item-text">';
 
-										$return_html .= '<p>';
+								$return_html .= '<p>';
 
-										// The content
+								// The content
 
-										if( array_key_exists( 'record', $bsky_post['post'] ) && array_key_exists( 'facets', $bsky_post['post']['record'] ) ) {
+								if( array_key_exists( 'record', $bsky_post['post'] ) && array_key_exists( 'facets', $bsky_post['post']['record'] ) ) {
 
-											// We seem to have links. Let's make them clickable in the content.
+									// We seem to have links. Let's make them clickable in the content.
 
-											$replace = array();
+									$replace = array();
 
-											foreach( $bsky_post['post']['record']['facets'] as $facet ) {
+									foreach( $bsky_post['post']['record']['facets'] as $facet ) {
 
-												if( array_key_exists( 'features', $facet ) && is_array( $facet['features'] ) && !empty( $facet['features'] ) ) {
+										if( array_key_exists( 'features', $facet ) && is_array( $facet['features'] ) && !empty( $facet['features'] ) ) {
 
-													if( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
+											if( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
 
-														// Hashtag
+												// Hashtag
 
-														$tag = $facet['features'][0]['tag'];
+												$tag = $facet['features'][0]['tag'];
 
-														$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+												$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
 
-														$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
+												$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
 
-														$replace[ $replace_this ] = '<a href="https://bsky.app/hashtag/' . $tag . '" target="_blank">' . $replace_this . '</a>';
-
-													}
-													elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
-
-														// Link
-
-														$uri = $facet['features'][0]['uri'];
-
-														$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
-
-														$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
-
-														$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
-
-													}
-													elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#mention' ) {
-
-														// Username
-
-														$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
-
-														$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
-
-														$replace[ $replace_this ] = '<a href="https://bsky.app/profile/' . str_replace( '@', '', $replace_this ) . '" target="_blank">' . $replace_this . '</a>';
-
-													}
-
-												}
+												$replace[ $replace_this ] = '<a href="https://bsky.app/hashtag/' . $tag . '" target="_blank">' . $replace_this . '</a>';
 
 											}
+											elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
 
-											$return_html .= nl2br( str_replace( array_keys( $replace ), $replace, $bsky_post['post']['record']['text'] ), false );
+												// Link
 
-										}
-										else {
+												$uri = $facet['features'][0]['uri'];
 
-											// We have no rich content. Output as plain text.
-											$return_html .= nl2br( $bsky_post['post']['record']['text'], false );
+												$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
 
-										}
+												$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
 
-										$return_html .= '</p>';
+												$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
 
-									// Embeds
-
-									if( array_key_exists( 'embed', $bsky_post['post'] ) ) {
-
-										// Quoted post
-
-										if( array_key_exists( '$type', $bsky_post['post']['embed'] ) && $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.recordWithMedia#view' ) {
-
-											// We have both images and quoted post
-
-										}
-										elseif( array_key_exists( 'record', $bsky_post['post']['embed'] ) ) {
-
-											// Quoted post only
-
-											if( $bsky_post['post']['embed']['record']['$type'] == 'app.bsky.embed.record#viewRecord' ) {
-
-												$return_html .= '<div class="bsky-embeds-record"><blockquote>';
-
-												// Avatar
-												$return_html .= '<img src="' . $bsky_post['post']['embed']['record']['author']['avatar'] . '" alt="" width="60" hspace="10" align="left">';
+											}
+											elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#mention' ) {
 
 												// Username
-												$return_html .= '<a href="https://bsky.app/profile/'.$bsky_post['post']['embed']['record']['author']['handle'].'" target="_blank">' . htmlentities( $bsky_post['post']['embed']['record']['author']['displayName'] ) . '</a><br>';
 
-												// We need post ID for the link... This is very ugly.
-												$link_parts = explode( 'app.bsky.feed.post/', $bsky_post['post']['embed']['record']['uri'] );
+												$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
 
-												// Timestamp incl. link to post.
-												$return_html .= '<small><a href="https://bsky.app/profile/' . $bsky_post['post']['embed']['record']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank">' . date( $date_time_format, strtotime( $bsky_post['post']['embed']['record']['value']['createdAt'] ) ) . '</a></small>';
+												$replace_this = substr( $bsky_post['post']['record']['text'], $facet['index']['byteStart'], $length );
 
-												$return_html .= '<div class="bsky-item-embed-record-text"><p>';
-
-												// The content of quoted post
-
-												if( array_key_exists( 'record', $bsky_post['post']['embed'] ) && array_key_exists( 'value', $bsky_post['post']['embed']['record'] ) && array_key_exists( 'facets', $bsky_post['post']['embed']['record']['value'] ) ) {
-
-													// We seem to have links. Let's make them clickable in the content.
-
-													$replace = array();
-
-													foreach( $bsky_post['post']['embed']['record']['value']['facets'] as $facet ) {
-
-														if( array_key_exists( 'features', $facet ) && is_array( $facet['features'] ) && !empty( $facet['features'] ) ) {
-
-															if( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
-
-																// Hashtag
-
-																$tag = $facet['features'][0]['tag'];
-
-																$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
-
-																$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
-
-																$replace[ $replace_this ] = '<a href="https://bsky.app/hashtag/' . $tag . '" target="_blank">' . $replace_this . '</a>';
-
-															}
-															elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
-
-																	// Link
-
-																$uri = $facet['features'][0]['uri'];
-
-																$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
-
-																$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
-
-																$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
-
-															}
-															elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#mention' ) {
-
-																// Username
-
-																$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
-
-																$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
-
-																$replace[ $replace_this ] = '<a href="https://bsky.app/profile/' . str_replace( '@', '', $replace_this ) . '" target="_blank">' . $replace_this . '</a>';
-
-															}
-
-														}
-
-													}
-
-													$return_html .= nl2br( str_replace( array_keys( $replace ), $replace, $bsky_post['post']['embed']['record']['value']['text'] ), false );
-
-												}
-												else {
-
-													// We have no rich content. Output as plain text.
-													$return_html .= nl2br( $bsky_post['post']['embed']['record']['value']['text'], false );
-
-												}
-
-												$return_html .= '</div> <!--bsky-item-embed-record-text -->';
-
-												$return_html .= '</blockquote></div> <!-- bsky-embeds-record -->';
+												$replace[ $replace_this ] = '<a href="https://bsky.app/profile/' . str_replace( '@', '', $replace_this ) . '" target="_blank">' . $replace_this . '</a>';
 
 											}
-
-										}
-
-										// External link
-
-										if( array_key_exists( 'external', $bsky_post['post']['embed'] ) ) {
-
-											if( $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.external#view' && array_key_exists( 'thumb', $bsky_post['post']['embed']['external'] ) ) {
-
-												$return_html .= '<div class="bsky-embeds-external"><blockquote>';
-
-												// Thumbnail
-												$return_html .= '<img src="' . $bsky_post['post']['embed']['external']['thumb'] . '" alt="" width="40" hspace="10" align="left">';
-
-												$return_html .= '<a href="'.$bsky_post['post']['embed']['external']['uri'].'" target="_blank">';
-												$return_html .= '<strong>' . htmlentities( $bsky_post['post']['embed']['external']['title'] ) . '</strong><br>';
-												$return_html .= htmlentities( $bsky_post['post']['embed']['external']['description'] );
-												$return_html .= '</a><br>';
-
-												$return_html .= '</blockquote></div> <!-- bsky-embeds-external -->';
-
-											}
-
-										}
-
-
-										if( array_key_exists( 'images', $bsky_post['post']['embed'] ) ) {
-
-											// Images
-
-											$return_html .= '<div class="bsky-embeds-images">';
-
-											foreach( $bsky_post['post']['embed']['images'] as $bsky_image ) {
-
-												$return_html .= '<p><a href="' . $bsky_image['fullsize'] . '" target="_blank"><img src="' . $bsky_image['thumb'] . '" alt="' . $bsky_image['alt'] . '" width="100%"></a></p>';
-
-											}
-
-											$return_html .= '</div> <!-- bsky-embeds-images -->';
-
-										}
-										elseif( array_key_exists( '$type', $bsky_post['post']['embed'] ) && $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.video#view' ) {
-
-											// Video
-
-											$return_html .= '<div class="bsky-embeds-images">';
-
-											// Display only image preview or whole video embed depending on what is chosen in WP admin > Settings > Bluesky posts
-											$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
-
-											if ( $wp_bluesky_videopreviewonly == 1 ) {
-
-												// Preview image only
-
-												$return_html .= '<p><a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank"><img src="' . $bsky_post['post']['embed']['thumbnail'] . '" alt="' . $bsky_post['post']['embed']['alt'] . '" width="100%"></a></p>';
-
-											}
-											else {
-
-												// Video embed
-
-												$video_id = stripcslashes( strip_tags( $bsky_post['post']['embed']['cid'] ) );
-
-												$return_html .= '<video id="video_' . $video_id . '" controls width="100%" poster="' . $bsky_post['post']['embed']['thumbnail'] . '" aria-label="' . $bsky_post['post']['embed']['alt'] . '"></video>
-												<script>
-												const video_' . $video_id . ' = document.getElementById("video_' . $video_id . '");
-												const playlistUrl_' . $video_id . ' = "' . $bsky_post['post'][ 'embed' ][ 'playlist' ] . '";
-												if (Hls.isSupported()) {
-													const hls_' . $video_id . ' = new Hls();
-													hls_' . $video_id . '.loadSource(playlistUrl_' . $video_id . ');
-													hls_' . $video_id . '.attachMedia(video_' . $video_id . ');
-													hls_' . $video_id . '.on(Hls.Events.MANIFEST_PARSED, function () {
-														//video_' . $video_id . '.play(); // autoplay
-													});
-												} else if (video_' . $video_id . '.canPlayType("application/vnd.apple.mpegurl")) {
-													// Safari and some iOS devices support it natively
-													video_' . $video_id . '.src = playlistUrl_' . $video_id . ';
-													video_' . $video_id . '.addEventListener("loadedmetadata", function () {
-														//video_' . $video_id . '.play(); // autoplay
-													});
-												} else {
-													video_' . $video_id . '.outerHTML = "Your browser does not support HLS playback.";
-												}
-												</script>';
-
-											}
-
-											$return_html .= '</div> <!-- bsky-embeds-images -->';
 
 										}
 
 									}
 
-									$return_html .= '</div> <!--bsky-item-text -->';
+									$return_html .= nl2br( str_replace( array_keys( $replace ), $replace, $bsky_post['post']['record']['text'] ), false );
 
-									$return_html .= '<div class="bsky-item-stats"><p><small>';
+								}
+								else {
 
-										// Stats
-										$return_html .= '<span class="bsky-stats-likes">Likes <span class="bsky-stats-value">' . $bsky_post['post']['likeCount'] . '</span></span> ';
-										$return_html .= '<span class="bsky-stats-reposts">Reposts <span class="bsky-stats-value">' . $bsky_post['post']['repostCount'] . '</span></span> ';
-										$return_html .= '<span class="bsky-stats-replies">Replies <span class="bsky-stats-value">' . $bsky_post['post']['replyCount'] . '</span></span>';
+									// We have no rich content. Output as plain text.
+									$return_html .= nl2br( $bsky_post['post']['record']['text'], false );
 
-									$return_html .= '</small></p></div> <!-- bsky-item-stats -->';
+								}
+
+								$return_html .= '</p>';
+
+								// Embeds
+
+								if( array_key_exists( 'embed', $bsky_post['post'] ) ) {
+
+									// Quoted post
+
+									if( array_key_exists( '$type', $bsky_post['post']['embed'] ) && $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.recordWithMedia#view' ) {
+
+										// We have both images and quoted post
+
+									}
+									elseif( array_key_exists( 'record', $bsky_post['post']['embed'] ) ) {
+
+										// Quoted post only
+
+										if( $bsky_post['post']['embed']['record']['$type'] == 'app.bsky.embed.record#viewRecord' ) {
+
+											$return_html .= '<div class="bsky-embeds-record"><blockquote>';
+
+											// Avatar
+											$return_html .= '<img src="' . $bsky_post['post']['embed']['record']['author']['avatar'] . '" alt="" width="60" hspace="10" align="left">';
+
+											// Username
+											$return_html .= '<a href="https://bsky.app/profile/'.$bsky_post['post']['embed']['record']['author']['handle'].'" target="_blank">' . htmlentities( $bsky_post['post']['embed']['record']['author']['displayName'] ) . '</a><br>';
+
+											// We need post ID for the link... This is very ugly.
+											$link_parts = explode( 'app.bsky.feed.post/', $bsky_post['post']['embed']['record']['uri'] );
+
+											// Timestamp incl. link to post.
+											$return_html .= '<small><a href="https://bsky.app/profile/' . $bsky_post['post']['embed']['record']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank">' . date( $date_time_format, strtotime( $bsky_post['post']['embed']['record']['value']['createdAt'] ) ) . '</a></small>';
+
+											$return_html .= '<div class="bsky-item-embed-record-text"><p>';
+
+											// The content of quoted post
+
+											if( array_key_exists( 'record', $bsky_post['post']['embed'] ) && array_key_exists( 'value', $bsky_post['post']['embed']['record'] ) && array_key_exists( 'facets', $bsky_post['post']['embed']['record']['value'] ) ) {
+
+												// We seem to have links. Let's make them clickable in the content.
+
+												$replace = array();
+
+												foreach( $bsky_post['post']['embed']['record']['value']['facets'] as $facet ) {
+
+													if( array_key_exists( 'features', $facet ) && is_array( $facet['features'] ) && !empty( $facet['features'] ) ) {
+
+														if( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#tag' ) {
+
+															// Hashtag
+
+															$tag = $facet['features'][0]['tag'];
+
+															$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+															$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
+
+															$replace[ $replace_this ] = '<a href="https://bsky.app/hashtag/' . $tag . '" target="_blank">' . $replace_this . '</a>';
+
+														}
+														elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#link' ) {
+
+															// Link
+
+															$uri = $facet['features'][0]['uri'];
+
+															$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+															$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
+
+															$replace[ $replace_this ] = '<a href="' . $uri . '" target="_blank">' . $replace_this . '</a>';
+
+														}
+														elseif( $facet['features'][0]['$type'] == 'app.bsky.richtext.facet#mention' ) {
+
+															// Username
+
+															$length = $facet['index']['byteEnd'] - $facet['index']['byteStart'];
+
+															$replace_this = substr( $bsky_post['post']['embed']['record']['value']['text'], $facet['index']['byteStart'], $length );
+
+															$replace[ $replace_this ] = '<a href="https://bsky.app/profile/' . str_replace( '@', '', $replace_this ) . '" target="_blank">' . $replace_this . '</a>';
+
+														}
+
+													}
+
+												}
+
+												$return_html .= nl2br( str_replace( array_keys( $replace ), $replace, $bsky_post['post']['embed']['record']['value']['text'] ), false );
+
+											}
+											else {
+
+												// We have no rich content. Output as plain text.
+												$return_html .= nl2br( $bsky_post['post']['embed']['record']['value']['text'], false );
+
+											}
+
+											$return_html .= '</div> <!--bsky-item-embed-record-text -->';
+
+											$return_html .= '</blockquote></div> <!-- bsky-embeds-record -->';
+
+										}
+
+									}
+
+									// External link
+
+									if( array_key_exists( 'external', $bsky_post['post']['embed'] ) ) {
+
+										if( $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.external#view' && array_key_exists( 'thumb', $bsky_post['post']['embed']['external'] ) ) {
+
+											$return_html .= '<div class="bsky-embeds-external"><blockquote>';
+
+											// Thumbnail
+											$return_html .= '<img src="' . $bsky_post['post']['embed']['external']['thumb'] . '" alt="" width="40" hspace="10" align="left">';
+
+											$return_html .= '<a href="'.$bsky_post['post']['embed']['external']['uri'].'" target="_blank">';
+											$return_html .= '<strong>' . htmlentities( $bsky_post['post']['embed']['external']['title'] ) . '</strong><br>';
+											$return_html .= htmlentities( $bsky_post['post']['embed']['external']['description'] );
+											$return_html .= '</a><br>';
+
+											$return_html .= '</blockquote></div> <!-- bsky-embeds-external -->';
+
+										}
+
+									}
+
+
+									if( array_key_exists( 'images', $bsky_post['post']['embed'] ) ) {
+
+										// Images
+
+										$return_html .= '<div class="bsky-embeds-images">';
+
+										foreach( $bsky_post['post']['embed']['images'] as $bsky_image ) {
+
+											$return_html .= '<p><a href="' . $bsky_image['fullsize'] . '" target="_blank"><img src="' . $bsky_image['thumb'] . '" alt="' . $bsky_image['alt'] . '" width="100%"></a></p>';
+
+										}
+
+										$return_html .= '</div> <!-- bsky-embeds-images -->';
+
+									}
+									elseif( array_key_exists( '$type', $bsky_post['post']['embed'] ) && $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.video#view' ) {
+
+										// Video
+
+										$return_html .= '<div class="bsky-embeds-images">';
+
+										// Display only image preview or whole video embed depending on what is chosen in WP admin > Settings > Bluesky posts
+										$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
+
+										if ( $wp_bluesky_videopreviewonly == 1 ) {
+
+											// Preview image only
+
+											$return_html .= '<p><a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank"><img src="' . $bsky_post['post']['embed']['thumbnail'] . '" alt="' . $bsky_post['post']['embed']['alt'] . '" width="100%"></a></p>';
+
+										}
+										else {
+
+											// Video embed
+
+											$video_id = stripcslashes( strip_tags( $bsky_post['post']['embed']['cid'] ) );
+
+											$return_html .= '<video id="video_' . $video_id . '" controls width="100%" poster="' . $bsky_post['post']['embed']['thumbnail'] . '" aria-label="' . $bsky_post['post']['embed']['alt'] . '"></video>
+											<script>
+											const video_' . $video_id . ' = document.getElementById("video_' . $video_id . '");
+											const playlistUrl_' . $video_id . ' = "' . $bsky_post['post'][ 'embed' ][ 'playlist' ] . '";
+											if (Hls.isSupported()) {
+												const hls_' . $video_id . ' = new Hls();
+												hls_' . $video_id . '.loadSource(playlistUrl_' . $video_id . ');
+												hls_' . $video_id . '.attachMedia(video_' . $video_id . ');
+												hls_' . $video_id . '.on(Hls.Events.MANIFEST_PARSED, function () {
+													//video_' . $video_id . '.play(); // autoplay
+												});
+											} else if (video_' . $video_id . '.canPlayType("application/vnd.apple.mpegurl")) {
+												// Safari and some iOS devices support it natively
+												video_' . $video_id . '.src = playlistUrl_' . $video_id . ';
+												video_' . $video_id . '.addEventListener("loadedmetadata", function () {
+													//video_' . $video_id . '.play(); // autoplay
+												});
+											} else {
+												video_' . $video_id . '.outerHTML = "Your browser does not support HLS playback.";
+											}
+											</script>';
+
+										}
+
+										$return_html .= '</div> <!-- bsky-embeds-images -->';
+
+									}
+
+								}
+
+								$return_html .= '</div> <!--bsky-item-text -->';
+
+								$return_html .= '<div class="bsky-item-stats"><p><small>';
+
+								// Stats
+								$return_html .= '<span class="bsky-stats-likes">Likes <span class="bsky-stats-value">' . $bsky_post['post']['likeCount'] . '</span></span> ';
+								$return_html .= '<span class="bsky-stats-reposts">Reposts <span class="bsky-stats-value">' . $bsky_post['post']['repostCount'] . '</span></span> ';
+								$return_html .= '<span class="bsky-stats-replies">Replies <span class="bsky-stats-value">' . $bsky_post['post']['replyCount'] . '</span></span>';
+
+								$return_html .= '</small></p></div> <!-- bsky-item-stats -->';
 
 								$return_html .= '</div> <!-- bsky-item -->';
 
