@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Bluesky posts
  * Description: This enables the shortcode [bluesky-posts] that outputs a specific users Bluesky posts based on your settings.
- * Version: 2025.1.28
+ * Version: 2025.4.30
  * Update URI: https://github.com/kendafi/wp-bluesky-posts/
  * Author: Kenda
  * Author URI: https://kenda.fi/
@@ -108,9 +108,21 @@ function wp_bluesky_posts_page_content() {
 			'wp_bluesky_dateformat' => trim( $_POST[ 'wp_bluesky_dateformat' ] )
 		);
 
-		if ( isset( $_POST[ 'wp_bluesky_disablecss' ] ) ) {
+		if ( isset( $_POST[ 'wp_bluesky_disable_css' ] ) ) {
 
 			$wp_bluesky_posts_settings['wp_bluesky_disablecss'] = 1;
+
+		}
+
+		if ( isset( $_POST[ 'wp_bluesky_disable_js' ] ) ) {
+
+			$wp_bluesky_posts_settings['wp_bluesky_disablejs'] = 1;
+
+		}
+
+		if ( isset( $_POST[ 'wp_bluesky_videopreviewonly' ] ) ) {
+
+			$wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] = 1;
 
 		}
 
@@ -124,7 +136,9 @@ function wp_bluesky_posts_page_content() {
 
 	$wp_bluesky_author = '';
 	$wp_bluesky_dateformat = '';
-	$wp_bluesky_disablecss = '';
+	$wp_bluesky_disable_css = 0;
+	$wp_bluesky_disable_js = 0;
+	$wp_bluesky_videopreviewonly = 0;
 
 	// Get any settings we may already have stored.
 	$wp_bluesky_posts_settings = get_option( 'wp_bluesky_posts' );
@@ -137,7 +151,9 @@ function wp_bluesky_posts_page_content() {
 
 			$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
 			$wp_bluesky_dateformat = ( array_key_exists( 'wp_bluesky_dateformat', $wp_bluesky_posts_settings ) ? str_replace( '\\\\', '\\', $wp_bluesky_posts_settings['wp_bluesky_dateformat'] ) : 'j.n.Y @ H:i' );
-			$wp_bluesky_disablecss = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
+			$wp_bluesky_disable_css = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
+			$wp_bluesky_disable_js = ( array_key_exists( 'wp_bluesky_disablejs', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablejs'] : 0 );
+			$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
 
 		}
 
@@ -154,7 +170,11 @@ function wp_bluesky_posts_page_content() {
 	<a href="https://www.php.net/manual/en/datetime.format.php#refsect1-datetime.format-parameters" target="_blank">PHP: DateTimeInterface::format</a><br>
 	<input type="text" name="wp_bluesky_dateformat" id="wp_bluesky_dateformat" placeholder="j.n.Y @ H:i" value="'.esc_html( $wp_bluesky_dateformat ).'" class="regular-text"></p>
 
-	<p><input type="checkbox" name="wp_bluesky_disablecss" id="wp_bluesky_disablecss" value="1"' . ( $wp_bluesky_disablecss == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disablecss">'.esc_html__( 'Disable CSS set by this plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>';
+	<p><input type="checkbox" name="wp_bluesky_disable_css" id="wp_bluesky_disable_css" value="1"' . ( $wp_bluesky_disable_css == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disable_css">'.esc_html__( 'Disable CSS set by this plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>
+
+	<p><input type="checkbox" name="wp_bluesky_disable_js" id="wp_bluesky_disable_js" value="1"' . ( $wp_bluesky_disable_js == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disable_js">'.esc_html__( 'Disable JavaScript set by this plugin - I want to include hls.js on my own. Get it from here:', 'wp-bluesky-posts' ).'</label> <a href="https://www.jsdelivr.com/package/npm/hls.js" target="_blank">www.jsdelivr.com/package/npm/hls.js</a></p>
+
+	<p><input type="checkbox" name="wp_bluesky_videopreviewonly" id="wp_bluesky_videopreviewonly" value="1"' . ( $wp_bluesky_videopreviewonly == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_videopreviewonly">'.esc_html__( 'Keep webpage light. Display only image preview of videos instead of making them all embeds. This automatically disables loading of the JavaScript whatever its setting is above.', 'wp-bluesky-posts' ).'</label></p>';
 
 	settings_fields( 'wp-bluesky-posts' );
 
@@ -180,13 +200,15 @@ function wp_bluesky_posts_page_content() {
 
 }
 
-// Add CSS
+// Add CSS and JavaScript
 
 add_action( 'wp_enqueue_scripts', 'wp_bluesky_assets' );
 
 function wp_bluesky_assets() {
 
-	$wp_bluesky_disablecss = 0;
+	$wp_bluesky_disable_css = 0;
+	$wp_bluesky_disable_js = 0;
+	$wp_bluesky_videopreviewonly = 0;
 
 	// Get any settings we may already have stored.
 	$wp_bluesky_posts_settings = get_option( 'wp_bluesky_posts' );
@@ -197,13 +219,15 @@ function wp_bluesky_assets() {
 
 		if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
 
-			$wp_bluesky_disablecss = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
+			$wp_bluesky_disable_css = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
+			$wp_bluesky_disable_js = ( array_key_exists( 'wp_bluesky_disablejs', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablejs'] : 0 );
+			$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
 
 		}
 
 	}
 
-	if( $wp_bluesky_disablecss != 1 ) {
+	if( $wp_bluesky_disable_css != 1 ) {
 
 		// Use our CSS only if user has not disabled it in settings.
 
@@ -212,7 +236,7 @@ function wp_bluesky_assets() {
 		if ( file_exists( $our_path.'wp-bluesky-posts.css' ) ) {
 
 			wp_enqueue_style(
-				'wp-bluesky-posts',
+				'wp-bluesky-posts', // "-css" is automatically added to the ID
 				plugins_url( basename( $our_path ).'/wp-bluesky-posts.css' ),
 				false,
 				filemtime( $our_path.'wp-bluesky-posts.css' ),
@@ -220,6 +244,23 @@ function wp_bluesky_assets() {
 			);
 
 		}
+
+	}
+
+	if( $wp_bluesky_disable_js != 1 && $wp_bluesky_videopreviewonly != 1 ) {
+
+		// Use the JavaScript only if user has not disabled it in settings.
+
+		$plugin_data = get_plugin_data( __FILE__ );
+		$plugin_version = $plugin_data['Version'];
+
+		wp_enqueue_script(
+			'wp-bluesky-posts', // "-js" is automatically added to the ID
+			'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js',
+			array(),
+			$plugin_version,
+			false
+		);
 
 	}
 
@@ -551,14 +592,50 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 										elseif( array_key_exists( '$type', $bsky_post['post']['embed'] ) && $bsky_post['post']['embed']['$type'] == 'app.bsky.embed.video#view' ) {
 
 											// Video
-											// You can upload a video to Bluesky, but we do not yet get it this data.
-											// But we can display it's thumbnail and link to original post.
 
-											$return_html .= '<div class="bsky-embeds-images"><p>';
+											$return_html .= '<div class="bsky-embeds-images">';
 
-											$return_html .= '<a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank"><img src="' . $bsky_post['post']['embed']['thumbnail'] . '" alt="' . $bsky_post['post']['embed']['alt'] . '" width="100%"></a>';
+											// Display only image preview or whole video embed depending on what is chosen in WP admin > Settings > Bluesky posts
+											$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
 
-											$return_html .= '</p></div> <!-- bsky-embeds-images -->';
+											if ( $wp_bluesky_videopreviewonly == 1 ) {
+
+												// Preview image only
+
+												$return_html .= '<p><a href="https://bsky.app/profile/' . $bsky_post['post']['author']['handle'] . '/post/' . $link_parts[ 1 ] . '" target="_blank"><img src="' . $bsky_post['post']['embed']['thumbnail'] . '" alt="' . $bsky_post['post']['embed']['alt'] . '" width="100%"></a></p>';
+
+											}
+											else {
+
+												// Video embed
+
+												$video_id = stripcslashes( strip_tags( $bsky_post['post']['embed']['cid'] ) );
+
+												$return_html .= '<video id="video_' . $video_id . '" controls width="100%" poster="' . $bsky_post['post']['embed']['thumbnail'] . '" aria-label="' . $bsky_post['post']['embed']['alt'] . '"></video>
+												<script>
+												const video_' . $video_id . ' = document.getElementById("video_' . $video_id . '");
+												const playlistUrl_' . $video_id . ' = "' . $bsky_post['post'][ 'embed' ][ 'playlist' ] . '";
+												if (Hls.isSupported()) {
+													const hls_' . $video_id . ' = new Hls();
+													hls_' . $video_id . '.loadSource(playlistUrl_' . $video_id . ');
+													hls_' . $video_id . '.attachMedia(video_' . $video_id . ');
+													hls_' . $video_id . '.on(Hls.Events.MANIFEST_PARSED, function () {
+														//video_' . $video_id . '.play(); // autoplay
+													});
+												} else if (video_' . $video_id . '.canPlayType("application/vnd.apple.mpegurl")) {
+													// Safari and some iOS devices support it natively
+													video_' . $video_id . '.src = playlistUrl_' . $video_id . ';
+													video_' . $video_id . '.addEventListener("loadedmetadata", function () {
+														//video_' . $video_id . '.play(); // autoplay
+													});
+												} else {
+													video_' . $video_id . '.outerHTML = "Your browser does not support HLS playback.";
+												}
+												</script>';
+
+											}
+
+											$return_html .= '</div> <!-- bsky-embeds-images -->';
 
 										}
 

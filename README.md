@@ -31,6 +31,22 @@ Go in WP admin to Settings > Bluesky post. Enter the account which posts you wan
 
 Go to any page and add the shortcode `[bluesky-posts]` to its content.
 
+## Videos
+
+Videos come as playlists. A JavaScript library that implements an HTTP Live Streaming client
+is required for playlists to work in all modern browsers (some support it by default).
+This plugin adds `hls.js` into your `<head>`.
+It is loaded from [www.jsdelivr.com/package/npm/hls.js](https://www.jsdelivr.com/package/npm/hls.js)
+where you can read more about `hls.js`.
+
+You can also download a copy of it if you want to host it on your websites server.
+In this case you should disable loading the JavaScript from the CDN - do this
+on the plugin settings page in WP admin > Settings > Bluesky posts.
+
+If you want to keep your webpage fast you may want to only display images
+instead of the whole video embed that also requires that heavy JavaScript library mentioned above.
+You can select this option on the plugin settings page.
+
 ## Screenshots
 
 ![Screenshot of the settings page.](screenshots/settings-english.png)

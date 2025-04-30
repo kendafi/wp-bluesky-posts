@@ -45,8 +45,16 @@
 	margin-right: 10px;
 }
 
+.bsky-item video {
+	margin: 0 0 1rem 0;
+}
+
 .bsky-user-and-created p {
 	margin-bottom: 2rem;
+}
+
+.bsky-embeds-images a {
+	display: block;
 }
 
 .bsky-user-and-created img {
