@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bluesky posts\n"
-"POT-Creation-Date: 2026-06-10 10:48+0300\n"
-"PO-Revision-Date: 2026-06-10 10:51+0300\n"
+"POT-Creation-Date: 2026-06-10 11:16+0300\n"
+"PO-Revision-Date: 2026-06-10 11:18+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -30,7 +30,7 @@ msgid "Bluesky posts settings"
 msgstr "Bluesky-viestien asetukset"
 
 #. Plugin Name of the plugin/theme
-#: wp-bluesky-posts.php:75 wp-bluesky-posts.php:815
+#: wp-bluesky-posts.php:75 wp-bluesky-posts.php:816
 msgid "Bluesky posts"
 msgstr "Bluesky-viestit"
 
@@ -44,11 +44,11 @@ msgstr "Asetukset on päivitetty."
 
 #: wp-bluesky-posts.php:143
 msgid ""
-"Save settings below and use this shortcode to display Bluesky posts on any "
-"page:"
+"Save settings below and use the Bluesky posts content block or this "
+"shortcode to display Bluesky posts on any page:"
 msgstr ""
-"Tallenna alla olevat asetukset ja käytä tätä lyhytkoodia Bluesky-viestien "
-"näyttämiseen millä tahansa sivulla:"
+"Tallenna alla olevat asetukset ja käytä Bluesky-sisältölohkoa tai tätä "
+"lyhytkoodia Bluesky-viestien näyttämiseen millä tahansa sivulla:"
 
 #: wp-bluesky-posts.php:175
 msgid "Author whose posts to display"
@@ -95,11 +95,13 @@ msgstr "Tallenna asetukset"
 
 #: wp-bluesky-posts.php:201
 msgid ""
-"By default the shortcode displays 12 posts. You can specify the amount like "
-"the examples below."
+"By default both the content block and the shortcode displays 12 posts. You "
+"can specify the amount for the content block in it´s sidebar, and for the "
+"shortcode like the examples below."
 msgstr ""
-"Oletuksena lyhytkoodi näyttää 12 viestiä. Voit määrittää määrän alla olevien "
-"esimerkkien mukaisesti."
+"Oletuksena sekä sisältölohko että lyhytkoodi näyttää 12 viestiä. Voit "
+"määrittää määrän sisältölohkon osalta sen sivupalkisssa ja lyhytkoodin "
+"osalta alla olevien esimerkkien mukaisesti."
 
 #: wp-bluesky-posts.php:203
 msgid "To display only one post, use this shortcode:"
@@ -109,19 +111,29 @@ msgstr "Jos haluat näyttää vain yhden viestin, käytä tätä lyhytkoodia:"
 msgid "To display 12 posts, use this shortcode:"
 msgstr "Jos haluat näyttää 12 viestiä, käytä tätä lyhytkoodia:"
 
-#: wp-bluesky-posts.php:206
+#: wp-bluesky-posts.php:205
+msgid ""
+"By default the content block and the shortcode both display content by the "
+"author specified above. You can set the author also in the content block "
+"sidebar, and like this in the shortcode:"
+msgstr ""
+"Oletuksena sekä sisältölohko että lyhytkoodi näyttävät yllä mainitun tekijän "
+"sisällön. Voit asettaa tekijän myös sisältölohkon sivupalkissa ja määrittää "
+"sen näin lyhytkoodissa:"
+
+#: wp-bluesky-posts.php:207
 msgid "See this plugins source code and get the latest version from here:"
 msgstr "Katso tämän lisäosan lähdekoodi ja hae uusin versio täältä:"
 
-#: wp-bluesky-posts.php:208
+#: wp-bluesky-posts.php:209
 msgid "Do you like this free plugin?"
 msgstr "Pidätkö tästä ilmaisesta lisäosasta?"
 
-#: wp-bluesky-posts.php:209
+#: wp-bluesky-posts.php:210
 msgid "Please, donate energy drink money to the developer!"
 msgstr "Lahjoita muutama lantti energiajuomiin koodarille!"
 
-#: wp-bluesky-posts.php:780
+#: wp-bluesky-posts.php:781
 msgid ""
 "You can set a default author in Settings > Bluesky posts, but you can "
 "overwrite it here."
@@ -129,15 +141,15 @@ msgstr ""
 "Voit asettaa oletuskäyttäjän Asetuksissa > Bluesky-viestit, mutta voit "
 "yliajaa sen täällä."
 
-#: wp-bluesky-posts.php:800
+#: wp-bluesky-posts.php:801
 msgid "Author"
 msgstr "Bluesky-käyttäjänimi"
 
-#: wp-bluesky-posts.php:805
+#: wp-bluesky-posts.php:806
 msgid "Number of posts"
 msgstr "Julkaisujen määrä"
 
-#: wp-bluesky-posts.php:867 wp-bluesky-posts.php:873
+#: wp-bluesky-posts.php:868 wp-bluesky-posts.php:874
 msgid "Bluesky author name is missing."
 msgstr "Bluesky-käyttäjänimi puuttuu."
 
