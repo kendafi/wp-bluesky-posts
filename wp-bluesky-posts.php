@@ -110,6 +110,12 @@ function wp_bluesky_posts_page_content() {
 			'wp_bluesky_dateformat' => trim( $_POST[ 'wp_bluesky_dateformat' ] )
 		);
 
+		if ( isset( $_POST[ 'wp_bluesky_hidestats' ] ) ) {
+
+			$wp_bluesky_posts_settings['wp_bluesky_hidestats'] = 1;
+
+		}
+
 		if ( isset( $_POST[ 'wp_bluesky_disable_css' ] ) ) {
 
 			$wp_bluesky_posts_settings['wp_bluesky_disablecss'] = 1;
@@ -138,6 +144,7 @@ function wp_bluesky_posts_page_content() {
 
 	$wp_bluesky_author = '';
 	$wp_bluesky_dateformat = '';
+	$wp_bluesky_hidestats = 0;
 	$wp_bluesky_disable_css = 0;
 	$wp_bluesky_disable_js = 0;
 	$wp_bluesky_videopreviewonly = 0;
@@ -153,6 +160,7 @@ function wp_bluesky_posts_page_content() {
 
 			$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
 			$wp_bluesky_dateformat = ( array_key_exists( 'wp_bluesky_dateformat', $wp_bluesky_posts_settings ) ? str_replace( '\\\\', '\\', $wp_bluesky_posts_settings['wp_bluesky_dateformat'] ) : 'j.n.Y @ H:i' );
+			$wp_bluesky_hidestats = ( array_key_exists( 'wp_bluesky_hidestats', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_hidestats'] : 0 );
 			$wp_bluesky_disable_css = ( array_key_exists( 'wp_bluesky_disablecss', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablecss'] : 0 );
 			$wp_bluesky_disable_js = ( array_key_exists( 'wp_bluesky_disablejs', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_disablejs'] : 0 );
 			$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
@@ -171,6 +179,8 @@ function wp_bluesky_posts_page_content() {
 	'.esc_html__( 'Read more about datetime format parameters:', 'wp-bluesky-posts' ).'
 	<a href="https://www.php.net/manual/en/datetime.format.php#refsect1-datetime.format-parameters" target="_blank">PHP: DateTimeInterface::format</a><br>
 	<input type="text" name="wp_bluesky_dateformat" id="wp_bluesky_dateformat" placeholder="j.n.Y @ H:i" value="'.esc_html( $wp_bluesky_dateformat ).'" class="regular-text"></p>
+
+	<p><input type="checkbox" name="wp_bluesky_hidestats" id="wp_bluesky_hidestats" value="1"' . ( $wp_bluesky_hidestats == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_hidestats">'.esc_html__( 'Hide statistics displayed for each post item.', 'wp-bluesky-posts' ).'</label></p>
 
 	<p><input type="checkbox" name="wp_bluesky_disable_css" id="wp_bluesky_disable_css" value="1"' . ( $wp_bluesky_disable_css == 1 ? ' checked="checked"' : '' ) . '><label for="wp_bluesky_disable_css">'.esc_html__( 'Disable CSS set by this plugin - I want to use my own CSS.', 'wp-bluesky-posts' ).'</label></p>
 
@@ -328,6 +338,7 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 	$wp_bluesky_author = '';
 	$wp_bluesky_amount = 12;
+	$wp_bluesky_hidestats = 0;
 	$wp_bluesky_videopreviewonly = 0;
 	$date_time_format = 'j.n.Y @ H:i';
 
@@ -347,24 +358,28 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 	}
 
-	if ( strlen( $wp_bluesky_author ) < 1 ) {
+	$wp_bluesky_posts_settings = get_option( 'wp_bluesky_posts' );
 
-		$wp_bluesky_posts_settings = get_option( 'wp_bluesky_posts' );
+	if ( $wp_bluesky_posts_settings != '' ) {
 
-		if ( $wp_bluesky_posts_settings != '' ) {
+		$wp_bluesky_posts_settings = json_decode( $wp_bluesky_posts_settings, true );
 
-			$wp_bluesky_posts_settings = json_decode( $wp_bluesky_posts_settings, true );
+		if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
 
-			if ( is_array( $wp_bluesky_posts_settings ) && !empty( $wp_bluesky_posts_settings ) ) {
+
+			if ( strlen( $wp_bluesky_author ) < 1 ) {
 
 				$wp_bluesky_author = $wp_bluesky_posts_settings['wp_bluesky_author'];
 
-				// Display only image preview or whole video embed depending on what is chosen in WP admin > Settings > Bluesky posts
-				$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
-
-				$date_time_format = ( array_key_exists( 'wp_bluesky_dateformat', $wp_bluesky_posts_settings ) ? str_replace( '\\\\', '\\', $wp_bluesky_posts_settings['wp_bluesky_dateformat'] ) : 'j.n.Y @ H:i' );
-
 			}
+
+			// Should stats for each item be displayed or not
+			$wp_bluesky_hidestats = ( array_key_exists( 'wp_bluesky_hidestats', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_hidestats'] : 0 );
+
+			// Display only image preview or whole video embed depending on what is chosen in WP admin > Settings > Bluesky posts
+			$wp_bluesky_videopreviewonly = ( array_key_exists( 'wp_bluesky_videopreviewonly', $wp_bluesky_posts_settings ) ? $wp_bluesky_posts_settings['wp_bluesky_videopreviewonly'] : 0 );
+
+			$date_time_format = ( array_key_exists( 'wp_bluesky_dateformat', $wp_bluesky_posts_settings ) ? str_replace( '\\\\', '\\', $wp_bluesky_posts_settings['wp_bluesky_dateformat'] ) : 'j.n.Y @ H:i' );
 
 		}
 
@@ -725,14 +740,18 @@ function wp_bluesky_posts_shortcode_output( $atts = [], $content = null, $tag = 
 
 						$return_html .= '</div> <!--bsky-item-text -->';
 
-						$return_html .= '<div class="bsky-item-stats"><p><small>';
+						if ( $wp_bluesky_hidestats == 0 ) {
 
-						// Stats
-						$return_html .= '<span class="bsky-stats-likes">Likes <span class="bsky-stats-value">' . $bsky_post['post']['likeCount'] . '</span></span> ';
-						$return_html .= '<span class="bsky-stats-reposts">Reposts <span class="bsky-stats-value">' . $bsky_post['post']['repostCount'] . '</span></span> ';
-						$return_html .= '<span class="bsky-stats-replies">Replies <span class="bsky-stats-value">' . $bsky_post['post']['replyCount'] . '</span></span>';
+							$return_html .= '<div class="bsky-item-stats"><p><small>';
 
-						$return_html .= '</small></p></div> <!-- bsky-item-stats -->';
+							// Stats
+							$return_html .= '<span class="bsky-stats-likes">Likes <span class="bsky-stats-value">' . $bsky_post['post']['likeCount'] . '</span></span> ';
+							$return_html .= '<span class="bsky-stats-reposts">Reposts <span class="bsky-stats-value">' . $bsky_post['post']['repostCount'] . '</span></span> ';
+							$return_html .= '<span class="bsky-stats-replies">Replies <span class="bsky-stats-value">' . $bsky_post['post']['replyCount'] . '</span></span>';
+
+							$return_html .= '</small></p></div> <!-- bsky-item-stats -->';
+
+						}
 
 						$return_html .= '</div> <!-- bsky-item -->';
 
@@ -785,7 +804,7 @@ function wp_bluesky_posts_register_block() {
 		'post-amount' => [
 			'label' => __( 'Number of posts', 'wp-bluesky-posts' ),
 			'type' => 'number', // range does not work with PHP-only...
-			'enum' => range( 1, 30 ), // ...so we use a dropdown
+			'enum' => range( 1, 36 ), // ...so we use a dropdown
 			'default' => 12,
 		],
 	];
