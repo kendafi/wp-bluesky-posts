@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Bluesky posts
- * Description: This enables the shortcode [bluesky-posts] that outputs a specific users Bluesky posts based on your settings.
+ * Description: This enables a content block and a shortcode [bluesky-posts] that outputs a specific user´s Bluesky posts based on set settings.
  * Version: 2026.6.10
  * Plugin URI: https://github.com/kendafi/wp-bluesky-posts/
  * Update URI: wp-bluesky-posts-by-kenda

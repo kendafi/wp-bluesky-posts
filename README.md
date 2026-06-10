@@ -1,17 +1,26 @@
 # Bluesky posts WordPress plugin
 
-This enables a WordPress shortcode which displays posts from Bluesky according to your settings.
+This enables a content block and a shortcode that outputs a specific user´s Bluesky posts based on set settings.
 
 	[bluesky-posts]
 
-It displays a specific users original posts only. Replies and re-posts are skipped.
+It displays a specific user´s original posts only. Replies and re-posts are skipped.
 
-By default it displays 12 posts. You can specify this with attribute `amount`.
+By default it displays 12 posts. You can specify this in the content block sidebar.
+
+Or with attribute `amount` in the shortcode if you use that.
 For example to display only one post, use this shortcode.
 
 	[bluesky-posts amount=1]
 
-The plugin has some basic CSS, but it should use your sites font and color for the text.
+You can set a default username in Settings > Bluesky posts, but you can override
+it in the content block sidebar. This allows you to add multiple user´s feeds to the same page.
+
+Here is an example how to specify the author in the shortcode.
+
+	[bluesky-posts author="verkkotunnukset.bsky.social" amount=12]
+
+The plugin has some basic CSS, but it should use your site´s font and color for the text.
 You can turn off the plugin CSS if you want to style it completely yourself.
 
 The plugin stores fetched content into transients. This means we ping Bluesky
@@ -19,7 +28,8 @@ only once every 10 minutes to avoid exceeding any connection limits.
 
 ## Install
 
-Download this repository as a ZIP file from [github.com/kendafi/wp-bluesky-posts](https://github.com/kendafi/wp-bluesky-posts) by clicking on the green Code button and selecting Download ZIP.
+Clone [this repository](https://github.com/kendafi/wp-bluesky-posts)
+or download as a [ZIP file](https://github.com/kendafi/wp-bluesky-posts/archive/refs/heads/main.zip).
 
 Go to your WP admin > Plugins page and click on the Add New Plugin button.
 
@@ -27,9 +37,11 @@ Click on Upload Plugin button, and then on the Browse button to select the ZIP f
 
 Activate the plugin.
 
-Go in WP admin to Settings > Bluesky post. Enter the account which posts you want to display. Save settings.
+Go in WP admin to Settings > Bluesky post. Enter the account which posts you want to display by default. Save settings.
 
-Go to any page and add the shortcode `[bluesky-posts]` to its content.
+Go to any page and add either the Bluesky posts content block or the shortcode `[bluesky-posts]` to its content.
+
+If you need to add the Bluesky content block to any allowed blocks setting, its name is `kenda/bluesky`.
 
 ## Videos
 
