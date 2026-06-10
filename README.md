@@ -63,4 +63,6 @@ You can select this option on the plugin settings page.
 
 ![Screenshot of the settings page.](screenshots/settings-english.png)
 
+![Screenshot of the content block and it´s sidebar.](screenshots/content-block-english.png)
+
 ![Example of the output.](screenshots/users-posts.png)
