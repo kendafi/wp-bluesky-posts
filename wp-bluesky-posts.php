@@ -202,7 +202,7 @@ function wp_bluesky_posts_page_content() {
 
 	echo '<p>'.esc_html__( 'To display only one post, use this shortcode:', 'wp-bluesky-posts' ).' <code>[bluesky-posts amount=1]</code></p>';
 	echo '<p>'.esc_html__( 'To display 12 posts, use this shortcode:', 'wp-bluesky-posts' ).'<code>[bluesky-posts amount=12]</code></p>';
-	echo '<p>'.esc_html__( 'By default the shortcode displays content by the author specified above. You can set the author also in the content block sidebar, and like this in the shortcode:', 'wp-bluesky-posts' ).'<code>[bluesky-posts author="verkkotunnukset.bsky.social"]</code></p>';
+	echo '<p>'.esc_html__( 'By default the content block and the shortcode both display content by the author specified above. You can set the author also in the content block sidebar, and like this in the shortcode:', 'wp-bluesky-posts' ).'<code>[bluesky-posts author="verkkotunnukset.bsky.social"]</code></p>';
 
 	echo '<p>'.esc_html__( 'See this plugins source code and get the latest version from here:', 'wp-bluesky-posts' ).' <a href="https://github.com/kendafi/wp-bluesky-posts/" target="_blank">github.com/kendafi/wp-bluesky-posts</a></p>';
 
